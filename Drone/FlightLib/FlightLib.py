@@ -17,6 +17,7 @@ set_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 # variables
 telem = get_telemetry(frame_id=frame_id)  # initing telemetry
 yaw_current = telem.yaw
+z_current = telem.z
 
 # functions
 
@@ -44,4 +45,4 @@ def takeoff(z, speed=1, frame_id='fcu_horiz'): #be reworked soon
 def land(): #not completed
     print("Landing!")
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
-    print("Landed")
+    print("Landed!")
