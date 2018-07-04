@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 # imports
+import math
 import rospy
 from clever import srv
 from std_srvs.srv import Trigger
@@ -42,15 +43,15 @@ def capture_position():
 
 
 def reach(x, y, z, yaw=yaw_current, speed=1, tolerance=0.15, frame_id='aruco_map', freq=5):
-	telem = get_telemetry(frame_id=frame_id)
+    telem = get_telemetry(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x, y=y, z=z, yaw=yaw, speed=speed)
     print ("Reaching point:", "x=", x, ", y=", y, ", z=", z, "yaw=", yaw)
 
     # waiting for complition
 	while get_distance(x, y, z, telem.x, telem.y, telem.z) > tolerance:
-		telem = get_telemetry(frame_id=frame_id)
+        telem = get_telemetry(frame_id=frame_id)
         print("Reaching point, telem:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw)
-		rospy.sleep(1/freq)
+        rospy.sleep(1/freq)
     print("Point reached!")
 
 def attitude(z, yaw=yaw_current, speed=1, tolerance=0.15, frame_id='aruco_map'):
