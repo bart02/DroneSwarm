@@ -1,16 +1,16 @@
 #!/usr/bin/python
 
 # imports
+from __future__ import print_function
 import math
 import rospy
 from clever import srv
-from std_srvs.srv import Trigger
 from mavros_msgs.srv import SetMode
 
-# initing ros node
+# init ros node
 rospy.init_node('CleverFlight')
 
-# creating proxy service
+# create proxy service
 get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
 navigate = rospy.ServiceProxy('navigate', srv.Navigate)
 set_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
