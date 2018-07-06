@@ -13,7 +13,7 @@ origin = 0
 
 
 
-def waitInterace():
+def waitInterface():
     global x, y, l, first, side, sep, mocap, origin, fp
 
     def buttoncb(w):
@@ -81,6 +81,6 @@ def waitInterace():
     button = Button(root, text="OK", command=lambda: buttoncb(root))
     button.grid(row=999, column=0, columnspan=999)
     root.mainloop()
-    return x, y, l, first, side, sep, mocap, origin, fp
+    return int(x), int(y), int(l), int(first), int(side), int(sep), bool(mocap), bool(origin), fp
 
 
