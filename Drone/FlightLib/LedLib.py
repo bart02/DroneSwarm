@@ -26,7 +26,7 @@ freq = 10
 
 
 # functions
-def wheel(pos):
+def math_wheel(pos):
     """Generate rainbow colors across 0-255 positions."""
     if pos < 85:
         return Color(pos * 3, 255 - pos * 3, 0)
@@ -38,14 +38,14 @@ def wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def led_rainbow(frequency=10):
+def rainbow(frequency=10):
     global freq
     global mode
     freq = frequency
     mode = "rainbow"
 
 
-def led_set(red, green, blue):
+def fill(red, green, blue):
     global r
     global g
     global b
@@ -53,10 +53,10 @@ def led_set(red, green, blue):
     r = red
     g = green
     b = blue
-    mode = "set"
+    mode = "fill"
 
 
-def led_blink(red, green, blue, frequency=10):
+def blink(red, green, blue, frequency=10):
     global r
     global g
     global b
@@ -76,19 +76,23 @@ def strip_set(color):
 
 
 def led_thread():
+    iteration = 0
     while True:
         if mode == "rainbow":
             for i in range(strip.numPixels()):
-                strip.setPixelColor(i, wheel(i & 255))
+                strip.setPixelColor(i, math_wheel((i + iteration) & 255))
             strip.show()
             time.sleep(1/freq)
-        elif mode == "set":
+        elif mode == "fill":
             strip_set(Color(r, g, b))
+            time.sleep(1/freq)
         elif mode == "blink":
             strip_set(Color(r, g, b))
             time.sleep(1/freq)
             strip_set(Color(0, 0, 0))
             time.sleep(1/freq)
+
+        iteration += 1
 
 
 # init
