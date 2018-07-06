@@ -38,7 +38,7 @@ def wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def led_rainbow(frequency):
+def led_rainbow(frequency=10):
     global freq
     global mode
     freq = frequency
@@ -56,6 +56,25 @@ def led_set(red, green, blue):
     mode = "set"
 
 
+def led_blink(red, green, blue, frequency=10):
+    global r
+    global g
+    global b
+    global freq
+    global mode
+    r = red
+    g = green
+    b = blue
+    freq = frequency
+    mode = "blink"
+
+
+def strip_set(color):
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(i, color)
+    strip.show()
+
+
 def led_thread():
     while True:
         if mode == "rainbow":
@@ -64,9 +83,12 @@ def led_thread():
             strip.show()
             time.sleep(1/freq)
         elif mode == "set":
-            for i in range(strip.numPixels()):
-                strip.setPixelColor(i, Color(r, g, b))
-            strip.show()
+            strip_set(Color(r, g, b))
+        elif mode == "blink":
+            strip_set(Color(r, g, b))
+            time.sleep(1/freq)
+            strip_set(Color(0, 0, 0))
+            time.sleep(1/freq)
 
 
 # init
