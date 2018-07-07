@@ -43,7 +43,7 @@ def math_wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def rainbow(wait=5):
+def rainbow(wait=10):
     global wait_ms, mode
     wait_ms = wait
     mode = "rainbow"
@@ -57,7 +57,7 @@ def fill(red, green, blue):
     mode = "fill"
 
 
-def blink(red, green, blue, wait=5):
+def blink(red, green, blue, wait=250):
     global r, g, b, wait_ms, mode
     r = red
     g = green
@@ -66,7 +66,7 @@ def blink(red, green, blue, wait=5):
     mode = "blink"
 
 
-def chase(red, green, blue, wait=20):
+def chase(red, green, blue, wait=50):
     global r, g, b, wait_ms, mode
     r = red
     g = green
@@ -84,7 +84,7 @@ def wipe_to(red, green, blue, wait=50):
     mode = "wipe_to"
 
 
-def fade_to(red, green, blue, wait=1):  # do not working with rainbow
+def fade_to(red, green, blue, wait=20):  # do not working with rainbow
     global r, g, b, r_prev, g_prev, b_prev, wait_ms, mode
     r_prev = r
     g_prev = g
