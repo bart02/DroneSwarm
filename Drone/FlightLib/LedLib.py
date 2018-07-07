@@ -138,18 +138,15 @@ def strip_run_step(red, green, blue):  # TODO
         strip.setPixelColor(i, Color(r, g, b))
 
 
-def strip_fade(r1, g1, b1, r2, g2, b2, frames=20):
+def strip_fade(r1, g1, b1, r2, g2, b2, frames=17):
     r_delta = (r2-r1)//frames
     g_delta = (g2-g1)//frames
     b_delta = (b2-b1)//frames
     for j in range(frames):
-        for i in range(strip.numPixels()):
-            red = r1+(r_delta*frames)
-            green = g1+(g_delta*frames)
-            blue = b1 + (b_delta * frames)
-            print (red, green, blue)
-            strip.setPixelColor(i, Color(red, green, blue))
-        strip.show()
+        red = r1 + (r_delta * j)
+        green = g1 + (g_delta * j)
+        blue = b1 + (b_delta * j)
+        strip_set(Color(red, green, blue))
         time.sleep(wait_ms / 1000.0)
     strip_set(Color(r2, g2, b2))
 
