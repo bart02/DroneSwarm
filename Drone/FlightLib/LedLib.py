@@ -168,16 +168,3 @@ def led_thread():
 # init
 strip.begin()
 Thread(target=led_thread()).start()
-
-print("Starting test...")
-fill(255, 0, 0)
-time.sleep(1)
-wipe_to(0, 255, 0)
-time.sleep(1)
-rainbow()
-time.sleep(1)
-chase(0, 0, 255)
-time.sleep(1)
-blink(255, 255, 255)
-time.sleep(1)
-off()
