@@ -1,5 +1,5 @@
-import threading
 from __future__ import print_function
+import threading
 from threading import Thread
 import math
 import time
