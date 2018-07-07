@@ -144,8 +144,8 @@ def strip_fade(r1, g1, b1, r2, g2, b2, frames=20):
     b_delta = (b2-b1)//frames
     for j in range(frames):
         for i in range(strip.numPixels()):
-            strip.setPixelColor(i, Color(r1+(r_delta*frames), g1+(g_delta*frames), b1+(b_delta*frames)))
             print (r1+(r_delta*frames), g1+(g_delta*frames), b1+(b_delta*frames))
+            strip.setPixelColor(i, Color(r1+(r_delta*frames), g1+(g_delta*frames), b1+(b_delta*frames)))
         strip.show()
         time.sleep(wait_ms / 1000.0)
     strip_set(Color(r2, g2, b2))
