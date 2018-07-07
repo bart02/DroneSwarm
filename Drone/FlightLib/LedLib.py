@@ -27,7 +27,7 @@ r_prev = 0
 g_prev = 0
 b_prev = 0
 
-freq = 10
+wait_ms = 10
 
 
 # functions
@@ -43,9 +43,9 @@ def math_wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def rainbow(frequency=5):
-    global freq, mode
-    freq = frequency
+def rainbow(wait=5):
+    global wait_ms, mode
+    wait_ms = wait
     mode = "rainbow"
 
 
@@ -57,42 +57,42 @@ def fill(red, green, blue):
     mode = "fill"
 
 
-def blink(red, green, blue, frequency=5):
-    global r, g, b, freq, mode
+def blink(red, green, blue, wait=5):
+    global r, g, b, wait_ms, mode
     r = red
     g = green
     b = blue
-    freq = frequency
+    wait_ms = wait
     mode = "blink"
 
 
-def chase(red, green, blue, frequency=20):
-    global r, g, b, freq, mode
+def chase(red, green, blue, wait=20):
+    global r, g, b, wait_ms, mode
     r = red
     g = green
     b = blue
-    freq = frequency
+    wait_ms = wait
     mode = "chase"
 
 
-def wipe_to(red, green, blue, frequency=10):
-    global r, g, b, freq, mode
+def wipe_to(red, green, blue, wait=50):
+    global r, g, b, wait_ms, mode
     r = red
     g = green
     b = blue
-    freq = frequency
+    wait_ms = wait
     mode = "wipe_to"
 
 
-def fade_to(red, green, blue, timing=1):  # do not working with rainbow
-    global r, g, b, r_prev, g_prev, b_prev, freq, mode
+def fade_to(red, green, blue, wait=1):  # do not working with rainbow
+    global r, g, b, r_prev, g_prev, b_prev, wait_ms, mode
     r_prev = r
     g_prev = g
     b_prev = b
     r = red
     g = green
     b = blue
-    freq = timing
+    wait_ms = wait
     mode = "fade_to"
 
 
@@ -112,7 +112,7 @@ def strip_chase_step(color):
         for i in range(0, strip.numPixels(), 3):
             strip.setPixelColor(i + q, color)
         strip.show()
-        time.sleep(1/freq)
+        time.sleep(wait_ms / 1000.0)
         for i in range(0, strip.numPixels(), 3):
             strip.setPixelColor(i + q, 0)
 
@@ -120,7 +120,7 @@ def strip_chase_step(color):
 def strip_wipe(color):
     for i in range(strip.numPixels()):
         strip.setPixelColor(i, color)
-        time.sleep(1 / freq)
+        time.sleep(wait_ms / 1000.0)
         strip.show()
 
 
@@ -142,18 +142,18 @@ def led_thread():
             for i in range(strip.numPixels()):
                 strip.setPixelColor(i, math_wheel((int(i * 256 / strip.numPixels()) + iteration) & 255))
             strip.show()
-            time.sleep(1/freq)
+            time.sleep(wait_ms / 1000.0)
         elif mode == "fill":
             strip_set(Color(r, g, b))
-            time.sleep(1/freq)
+            time.sleep(wait_ms / 1000.0)
         elif mode == "blink":
             strip_set(Color(r, g, b))
-            time.sleep(1 / freq)
+            time.sleep(1 / wait_ms)
             strip_set(Color(0, 0, 0))
-            time.sleep(1/freq)
+            time.sleep(wait_ms / 1000.0)
         elif mode == "chase":
             strip_chase_step(Color(r, g, b))
-            time.sleep(1 / freq)
+            time.sleep(wait_ms / 1000.0)
         elif mode == "wipe_to":
             strip_wipe(Color(r, g, b))
         elif mode == "fade_to":
