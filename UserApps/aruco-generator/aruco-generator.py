@@ -1,6 +1,5 @@
 from __future__ import print_function
 from toFile import *
-from interface import *
 import argparse
 
 
@@ -14,6 +13,7 @@ def createParser():
 parser = createParser()
 gui = parser.parse_args().gui
 if gui:
+    from interface import *
     x, y, l, first, side, sep, mocap, origin, fp = waitInterface()
     first = first - 1
     firsto = first + 1
