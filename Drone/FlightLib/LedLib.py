@@ -43,7 +43,7 @@ def math_wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def rainbow(frequency=10):
+def rainbow(frequency=5):
     global freq, mode
     freq = frequency
     mode = "rainbow"
@@ -57,7 +57,7 @@ def fill(red, green, blue):
     mode = "fill"
 
 
-def blink(red, green, blue, frequency=10):
+def blink(red, green, blue, frequency=5):
     global r, g, b, freq, mode
     r = red
     g = green
@@ -66,7 +66,7 @@ def blink(red, green, blue, frequency=10):
     mode = "blink"
 
 
-def chase(red, green, blue, frequency=10):
+def chase(red, green, blue, frequency=20):
     global r, g, b, freq, mode
     r = red
     g = green
@@ -75,7 +75,7 @@ def chase(red, green, blue, frequency=10):
     mode = "chase"
 
 
-def wipe_to(red, green, blue, frequency=1):
+def wipe_to(red, green, blue, frequency=10):
     global r, g, b, freq, mode
     r = red
     g = green
@@ -148,6 +148,7 @@ def led_thread():
             time.sleep(1/freq)
         elif mode == "blink":
             strip_set(Color(r, g, b))
+            time.sleep(1 / freq)
             strip_set(Color(0, 0, 0))
             time.sleep(1/freq)
         elif mode == "chase":
