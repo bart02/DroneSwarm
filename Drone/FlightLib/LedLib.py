@@ -167,4 +167,4 @@ def led_thread():
 
 # init
 strip.begin()
-Thread(target=led_thread()).start()
+Thread(target=led_thread).start()
