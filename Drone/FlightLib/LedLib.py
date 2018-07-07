@@ -146,34 +146,38 @@ def led_thread():
     global mode
     print("Starting thread")
     iteration = 0
-    while True:
-        if mode == "rainbow":
-            for i in range(strip.numPixels()):
-                strip.setPixelColor(i, math_wheel((int(i * 256 / strip.numPixels()) + iteration) & 255))
-            strip.show()
-            time.sleep(wait_ms / 1000.0)
-        elif mode == "fill":
-            strip_set(Color(r, g, b))
-            time.sleep(wait_ms / 1000.0)
-        elif mode == "blink":
-            strip_set(Color(r, g, b))
-            time.sleep(wait_ms / 1000.0)
-            strip_set(Color(0, 0, 0))
-            time.sleep(wait_ms / 1000.0)
-        elif mode == "chase":
-            strip_chase_step(Color(r, g, b))
-        elif mode == "wipe_to":
-            strip_wipe(Color(r, g, b))
-            mode = ""
-        elif mode == "fade_to":
-            strip_fade(Color(r_prev, g_prev, b_prev), Color(r, g, b))
-            mode = ""
-        elif mode == "off":
-            strip_off()
+    try:
+        while True:
+            if mode == "rainbow":
+                for i in range(strip.numPixels()):
+                    strip.setPixelColor(i, math_wheel((int(i * 256 / strip.numPixels()) + iteration) & 255))
+                strip.show()
+                time.sleep(wait_ms / 1000.0)
+            elif mode == "fill":
+                strip_set(Color(r, g, b))
+                time.sleep(wait_ms / 1000.0)
+            elif mode == "blink":
+                strip_set(Color(r, g, b))
+                time.sleep(wait_ms / 1000.0)
+                strip_set(Color(0, 0, 0))
+                time.sleep(wait_ms / 1000.0)
+            elif mode == "chase":
+                strip_chase_step(Color(r, g, b))
+            elif mode == "wipe_to":
+                strip_wipe(Color(r, g, b))
+                mode = ""
+            elif mode == "fade_to":
+                strip_fade(Color(r_prev, g_prev, b_prev), Color(r, g, b))
+                mode = ""
+            elif mode == "off":
+                strip_off()
 
-        iteration += 1
-        if iteration >= 256:
-            iteration = 0
+            iteration += 1
+            if iteration >= 256:
+                iteration = 0
+    except KeyboardInterrupt:
+        print("Aborted, shutting down")
+        strip_off()
 
 
 # init
@@ -186,4 +190,3 @@ try:
     while True:
         pass
 except KeyboardInterrupt:
-    off()
