@@ -22,6 +22,11 @@ mode = ""
 r = 0
 g = 0
 b = 0
+
+r_prev = 0
+g_prev = 0
+b_prev = 0
+
 freq = 10
 
 
@@ -39,17 +44,13 @@ def math_wheel(pos):
 
 
 def rainbow(frequency=10):
-    global freq
-    global mode
+    global freq, mode
     freq = frequency
     mode = "rainbow"
 
 
 def fill(red, green, blue):
-    global r
-    global g
-    global b
-    global mode
+    global r, g, b, mode
     r = red
     g = green
     b = blue
@@ -57,16 +58,47 @@ def fill(red, green, blue):
 
 
 def blink(red, green, blue, frequency=10):
-    global r
-    global g
-    global b
-    global freq
-    global mode
+    global r, g, b, freq, mode
     r = red
     g = green
     b = blue
     freq = frequency
     mode = "blink"
+
+
+def chase(red, green, blue, frequency=10):
+    global r, g, b, freq, mode
+    r = red
+    g = green
+    b = blue
+    freq = frequency
+    mode = "chase"
+
+
+def wipe_to(red, green, blue, frequency=1):
+    global r, g, b, freq, mode
+    r = red
+    g = green
+    b = blue
+    freq = frequency
+    mode = "wipe_to"
+
+
+def fade_to(red, green, blue, timing=1):  # do not working with rainbow
+    global r, g, b, r_prev, g_prev, b_prev, freq, mode
+    r_prev = r
+    g_prev = g
+    b_prev = b
+    r = red
+    g = green
+    b = blue
+    freq = timing
+    mode = "fade_to"
+
+
+def off():
+    global mode
+    mode = "off"
 
 
 def strip_set(color):
@@ -75,12 +107,39 @@ def strip_set(color):
     strip.show()
 
 
+def strip_chase_step(color):
+    for q in range(3):
+        for i in range(0, strip.numPixels(), 3):
+            strip.setPixelColor(i + q, color)
+        strip.show()
+        time.sleep(1/freq)
+        for i in range(0, strip.numPixels(), 3):
+            strip.setPixelColor(i + q, 0)
+
+
+def strip_wipe(color):
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(i, color)
+        time.sleep(1 / freq)
+        strip.show()
+
+
+def strip_fade(color1, color2):
+    pass
+
+
+def strip_off():
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(i, Color(0, 0, 0))
+    strip.show()
+
+
 def led_thread():
     iteration = 0
     while True:
         if mode == "rainbow":
             for i in range(strip.numPixels()):
-                strip.setPixelColor(i, math_wheel((i + iteration) & 255))
+                strip.setPixelColor(i, math_wheel((int(i * 256 / strip.numPixels()) + iteration) & 255))
             strip.show()
             time.sleep(1/freq)
         elif mode == "fill":
@@ -91,10 +150,34 @@ def led_thread():
             time.sleep(1/freq)
             strip_set(Color(0, 0, 0))
             time.sleep(1/freq)
+        elif mode == "chase":
+            strip_chase_step(Color(r, g, b))
+            time.sleep(1 / freq)
+        elif mode == "wipe_to":
+            strip_wipe(Color(r, g, b))
+        elif mode == "fade_to":
+            strip_fade(Color(r_prev, g_prev, b_prev), Color(r, g, b))
+        elif mode == "off":
+            strip_off()
 
         iteration += 1
+        if iteration >= 256:
+            iteration = 0
 
 
 # init
 strip.begin()
 Thread(target=led_thread()).start()
+
+if __name__ == "__main__":
+    fill(255, 0, 0)
+    time.sleep(1)
+    wipe_to(0, 255, 0)
+    time.sleep(1)
+    rainbow()
+    time.sleep(1)
+    chase(0, 0, 255)
+    time.sleep(1)
+    blink(255, 255, 255)
+    time.sleep(1)
+    off()
