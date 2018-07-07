@@ -1,6 +1,6 @@
 import threading
-from threading import Thread
 from __future__ import print_function
+from threading import Thread
 import math
 import time
 from neopixel import *
@@ -148,7 +148,6 @@ def led_thread():
             time.sleep(1/freq)
         elif mode == "blink":
             strip_set(Color(r, g, b))
-            time.sleep(1/freq)
             strip_set(Color(0, 0, 0))
             time.sleep(1/freq)
         elif mode == "chase":
