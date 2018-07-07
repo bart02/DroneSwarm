@@ -179,14 +179,8 @@ def led_thread():
         print("Aborted, shutting down")
         strip_off()
 
-
 # init
 strip.begin()
 t = Thread(target=led_thread)
 t.daemon = True
 t.start()
-
-try:
-    while True:
-        pass
-except KeyboardInterrupt:
