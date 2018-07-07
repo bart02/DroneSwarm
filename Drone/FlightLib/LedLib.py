@@ -1,12 +1,12 @@
 import threading
 from threading import Thread
-
+from __future__ import print_function
 import math
 import time
 from neopixel import *
 
 # LED strip configuration:
-LED_COUNT = 30  # Number of LED pixels.
+LED_COUNT = 29  # Number of LED pixels.
 LED_PIN = 21  # GPIO pin connected to the pixels (18 uses PWM!) (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA = 10  # DMA channel to use for generating signal (try 10)
@@ -135,6 +135,7 @@ def strip_off():
 
 
 def led_thread():
+    print("Starting thread")
     iteration = 0
     while True:
         if mode == "rainbow":
@@ -170,6 +171,7 @@ strip.begin()
 Thread(target=led_thread()).start()
 
 if __name__ == "__main__":
+    print("Starting test...")
     fill(255, 0, 0)
     time.sleep(1)
     wipe_to(0, 255, 0)
