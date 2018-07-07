@@ -124,6 +124,14 @@ def strip_wipe(color):
         strip.show()
 
 
+def strip_run_step(red, green, blue):
+    r_delta = red // strip.numPixels()
+    g_delta = green // strip.numPixels()
+    b_delta = blue // strip.numPixels()
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(i, Color(r, g, b))
+
+
 def strip_fade(color1, color2):
     pass
 
@@ -170,4 +178,12 @@ def led_thread():
 
 # init
 strip.begin()
-Thread(target=led_thread).start()
+t = Thread(target=led_thread)
+t.daemon = True
+t.start()
+
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    off()
