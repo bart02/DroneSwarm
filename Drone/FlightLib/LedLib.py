@@ -135,6 +135,7 @@ def strip_off():
 
 
 def led_thread():
+    global mode
     print("Starting thread")
     iteration = 0
     while True:
@@ -148,16 +149,17 @@ def led_thread():
             time.sleep(wait_ms / 1000.0)
         elif mode == "blink":
             strip_set(Color(r, g, b))
-            time.sleep(1 / wait_ms)
+            time.sleep(wait_ms / 1000.0)
             strip_set(Color(0, 0, 0))
             time.sleep(wait_ms / 1000.0)
         elif mode == "chase":
             strip_chase_step(Color(r, g, b))
-            time.sleep(wait_ms / 1000.0)
         elif mode == "wipe_to":
             strip_wipe(Color(r, g, b))
+            mode = ""
         elif mode == "fade_to":
             strip_fade(Color(r_prev, g_prev, b_prev), Color(r, g, b))
+            mode = ""
         elif mode == "off":
             strip_off()
 
