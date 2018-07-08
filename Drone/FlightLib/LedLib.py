@@ -84,7 +84,7 @@ def wipe_to(red, green, blue, wait=50):
     mode = "wipe_to"
 
 
-def fade_to(red, green, blue, wait=100):  # do not working with rainbow (solid colors only)
+def fade_to(red, green, blue, wait=20):  # do not working with rainbow (solid colors only)
     global r, g, b, r_prev, g_prev, b_prev, wait_ms, mode
     r_prev = r
     g_prev = g
@@ -138,7 +138,7 @@ def strip_run_step(red, green, blue):  # TODO
         strip.setPixelColor(i, Color(r, g, b))
 
 
-def strip_fade(r1, g1, b1, r2, g2, b2, frames=17):
+def strip_fade(r1, g1, b1, r2, g2, b2, frames=51):
     r_delta = (r2-r1)//frames
     g_delta = (g2-g1)//frames
     b_delta = (b2-b1)//frames
