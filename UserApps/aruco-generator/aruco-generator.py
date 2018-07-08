@@ -26,9 +26,9 @@ else:
     firsto = first + 1
     side = float(input("Side: "))
     sep = float(input("Sep: "))
-    mocap = bool(int(input("Mocap: ")))
+    mocap = bool(int(input("Mocap (true = 1; false = 0): ")))
     origin = bool(int(input("Origin (local_origin = 1; local_origin_upside_down = 0): ")))
-    fp = "/catkin_ws/src/clever/clever/launch/aruco.launch"
+    fp = "catkin_ws/src/clever/clever/launch/aruco.launch"
 
 Mx = []
 My = []
