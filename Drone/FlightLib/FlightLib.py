@@ -3,6 +3,7 @@
 # imports
 from __future__ import print_function
 import math
+import sys
 import rospy
 from clever import srv
 from mavros_msgs.srv import SetMode
@@ -23,6 +24,17 @@ z_current = 0
 
 
 # functions
+def safety_check():
+    telem = get_telemetry(frame_id='aruco_map')
+    print("Telems are:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw, "pitch=", telem.pitch, "roll=", telem.pitch)
+    telem = get_telemetry(frame_id='fcu_horiz')
+    print("Telems are:", "V-z=", telem.vz, "voltage=", telem.voltage)
+    ans = input("Are you sure about launch?")
+    ans = input("Are you ready to launch? Y/N: ")
+    if ans.lower() != "y":
+        sys.exit()
+
+
 def get_distance(x1, y1, z1, x2, y2, z2):
     return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2)
 
