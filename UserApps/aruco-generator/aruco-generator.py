@@ -28,7 +28,7 @@ else:
     sep = float(input("Sep: "))
     mocap = bool(int(input("Mocap (true = 1; false = 0): ")))
     origin = bool(int(input("Origin (local_origin = 1; local_origin_upside_down = 0): ")))
-    fp = "~/home/pi/catkin_ws/src/clever/clever/launch/aruco.launch"
+    fp = "/home/pi/catkin_ws/src/clever/clever/launch/aruco.launch"
 
 Mx = []
 My = []
