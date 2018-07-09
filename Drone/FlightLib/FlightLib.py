@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # imports
 from __future__ import print_function
 import math
@@ -9,7 +7,7 @@ from clever import srv
 from mavros_msgs.srv import SetMode
 
 # init ros node
-rospy.init_node('CleverFlight')
+rospy.init_node('CleverSwarmFlight')
 
 # create proxy service
 get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
