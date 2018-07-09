@@ -6,7 +6,7 @@ from FlightLib import LedLib as led
 
 led.fill(255, 255, 255)
 f.safety_check()
-f.takeoff()
+f.takeoff(yaw=0)
 led.rainbow()
 f.reach(1, 1, 1)
 led.chase(0, 255, 0)
