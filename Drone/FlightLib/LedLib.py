@@ -182,6 +182,7 @@ def led_thread():
         elif mode == "fill":
             strip_set(Color(r, g, b))
             time.sleep(wait_ms / 1000.0)
+            mode = ""
         elif mode == "blink":
             strip_set(Color(r, g, b))
             time.sleep(wait_ms / 1000.0)
@@ -201,6 +202,7 @@ def led_thread():
             iteration += 1
         elif mode == "off":
             strip_off()
+            mode = ""
 
 
 # init
