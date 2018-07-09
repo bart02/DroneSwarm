@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # imports
+from __future__ import print_function
 import math
 import sys
 import rospy
@@ -34,8 +35,8 @@ def safety_check():
     print("Telems are:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw, "pitch=", telem.pitch, "roll=", telem.pitch)
     telem = get_telemetry(frame_id='fcu_horiz')
     print("Telems are:", "V-z=", telem.vz, "voltage=", telem.voltage)
-    ans = input("Are you sure about launch?")
-    ans = input("Are you ready to launch? Y/N: ")
+    ans = raw_input("Are you sure about launch?")
+    ans = raw_input("Are you ready to launch? Y/N: ")
     if ans.lower() != "y":
         sys.exit()
 
