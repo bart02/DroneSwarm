@@ -6,10 +6,13 @@ import rospy
 from clever import srv
 from mavros_msgs.srv import SetMode
 
+
 # init ros node
-print("Initing")
-rospy.init_node('CleverSwarmFlight')
-print("Node inited")
+def init():
+    print("Initing")
+    rospy.init_node('CleverSwarmFlight')
+    print("Node inited")
+
 
 # create proxy service
 navigate = rospy.ServiceProxy('navigate', srv.Navigate)
@@ -68,7 +71,7 @@ def reach(x, y, z, yaw=yaw_current, speed=1, tolerance=0.15, frame_id='aruco_map
     print("Point reached!")
 
 
-def attitude(z, yaw=yaw_current, speed=1, tolerance=0.15, frame_id='aruco_map'):
+def attitude(z, yaw=yaw_current, speed=1, tolerance=0.2, frame_id='aruco_map'):
     print("Reaching attitude")
     capture_position()
     reach(x=x_current, y=y_current, z=z, yaw=yaw, speed=speed, tolerance=tolerance, frame_id=frame_id)
@@ -85,7 +88,7 @@ def takeoff(z=1, speed=1, frame_id='fcu_horiz'):
     print("Takeoff completed!")
 
 
-def land(z=0.5):
+def land(z=0.75):
     print("Landing!")
     attitude(z, tolerance=0.2)
     print("Ready to land")
