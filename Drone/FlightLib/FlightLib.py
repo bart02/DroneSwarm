@@ -92,3 +92,9 @@ def land(z=0.5):
 
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
     print("Land completed!")
+
+
+if __name__ == "__main__":
+    takeoff()
+    reach(1, 1, 1)
+    land()
