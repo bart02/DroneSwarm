@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # imports
 import math
 import sys
