@@ -45,17 +45,17 @@ for ll in range(x/l):
     O.append(My)
     My = []
 
-aruko_map = ""
-aruko_map += "[\n"
+aruco_map = ""
+aruco_map += "[\n"
 for e in range(len(O[0])):
     for j in range(len(O)):
         for q in O[j][e]:
             if e == len(O[0]) - 1 and j == len(O) - 1 and q == O[j][e][len(O[j][e])-1]:
-                aruko_map += str(q)
+                aruco_map += str(q)
             else:
-                aruko_map += str(q) + ', '
-    aruko_map += "\n"
-aruko_map += "]"
+                aruco_map += str(q) + ', '
+    aruco_map += "\n"
+aruco_map += "]"
 
-print(aruko_map)
-toFile(fp, x, y, firsto, side, sep, mocap, origin, aruko_map)
+print(aruco_map)
+toFile(fp, x, y, firsto, side, sep, mocap, origin, aruco_map)

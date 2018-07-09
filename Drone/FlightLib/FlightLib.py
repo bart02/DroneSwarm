@@ -1,19 +1,26 @@
 #!/usr/bin/python
-
 # imports
 from __future__ import print_function
 import math
+import sys
 import rospy
 from clever import srv
 from mavros_msgs.srv import SetMode
 
+
 # init ros node
-rospy.init_node('CleverFlight')
+def init():
+    print("Initing")
+    rospy.init_node('CleverSwarmFlight')
+    print("Node inited")
+
 
 # create proxy service
-get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
 navigate = rospy.ServiceProxy('navigate', srv.Navigate)
 set_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
+get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
+print("Proxy services inited")
+
 
 # variables
 yaw_current = 0
@@ -23,6 +30,17 @@ z_current = 0
 
 
 # functions
+def safety_check():
+    telem = get_telemetry(frame_id='aruco_map')
+    print("Telems are:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw, "pitch=", telem.pitch, "roll=", telem.pitch)
+    telem = get_telemetry(frame_id='fcu_horiz')
+    print("Telems are:", "V-z=", telem.vz, "voltage=", telem.voltage)
+    ans = raw_input("Are you sure about launch?")
+    ans = raw_input("Are you ready to launch? Y/N: ")
+    if ans.lower() != "y":
+        sys.exit()
+
+
 def get_distance(x1, y1, z1, x2, y2, z2):
     return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2)
 
@@ -54,7 +72,7 @@ def reach(x, y, z, yaw=yaw_current, speed=1, tolerance=0.15, frame_id='aruco_map
     print("Point reached!")
 
 
-def attitude(z, yaw=yaw_current, speed=1, tolerance=0.15, frame_id='aruco_map'):
+def attitude(z, yaw=yaw_current, speed=1, tolerance=0.2, frame_id='aruco_map'):
     print("Reaching attitude")
     capture_position()
     reach(x=x_current, y=y_current, z=z, yaw=yaw, speed=speed, tolerance=tolerance, frame_id=frame_id)
@@ -71,10 +89,15 @@ def takeoff(z=1, speed=1, frame_id='fcu_horiz'):
     print("Takeoff completed!")
 
 
-def land(z=0.5):
+def land(z=0.75):
     print("Landing!")
     attitude(z, tolerance=0.2)
     print("Ready to land")
 
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
     print("Land completed!")
+
+
+if __name__ == "__main__":
+    takeoff()
+    land()

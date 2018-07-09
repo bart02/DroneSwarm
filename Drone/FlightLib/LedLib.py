@@ -96,6 +96,15 @@ def fade_to(red, green, blue, wait=20):  # do not working with rainbow (solid co
     mode = "fade_to"
 
 
+def run(red, green, blue, wait=25):
+    global r, g, b, wait_ms, mode
+    r = red
+    g = green
+    b = blue
+    wait_ms = wait
+    mode = "run"
+
+
 def off():
     global mode
     mode = "off"
@@ -130,25 +139,27 @@ def strip_wipe(color):
         strip.show()
 
 
-def strip_run_step(red, green, blue):  # TODO
-    r_delta = red // strip.numPixels()
-    g_delta = green // strip.numPixels()
-    b_delta = blue // strip.numPixels()
-    for i in range(strip.numPixels()):
-        strip.setPixelColor(i, Color(r, g, b))
-
-
 def strip_fade(r1, g1, b1, r2, g2, b2, frames=51):
     r_delta = (r2-r1)//frames
     g_delta = (g2-g1)//frames
     b_delta = (b2-b1)//frames
-    for j in range(frames):
-        red = r1 + (r_delta * j)
-        green = g1 + (g_delta * j)
-        blue = b1 + (b_delta * j)
+    for i in range(frames):
+        red = r1 + (r_delta * i)
+        green = g1 + (g_delta * i)
+        blue = b1 + (b_delta * i)
         strip_set(Color(red, green, blue))
         time.sleep(wait_ms / 1000.0)
     strip_set(Color(r2, g2, b2))
+
+
+def strip_run_step(red, green, blue, iteration):
+    r_delta = red // strip.numPixels()
+    g_delta = green // strip.numPixels()
+    b_delta = blue // strip.numPixels()
+    for i in range(strip.numPixels()):
+        n = (i+iteration)%strip.numPixels()
+        strip.setPixelColor(n, Color(red - (r_delta * i), green - (g_delta * i), blue - (b_delta * i)))
+    strip.show()
 
 
 def strip_off():
@@ -163,8 +174,11 @@ def led_thread():
     iteration = 0
     while True:
         if mode == "rainbow":
+            if iteration >= 256:
+                iteration = 0
             strip_rainbow_frame(iteration)
             time.sleep(wait_ms / 1000.0)
+            iteration += 1
         elif mode == "fill":
             strip_set(Color(r, g, b))
             time.sleep(wait_ms / 1000.0)
@@ -181,13 +195,12 @@ def led_thread():
         elif mode == "fade_to":
             strip_fade(r_prev, g_prev, b_prev, r, g, b)
             mode = ""
+        elif mode == "run":
+            strip_run_step(r, g, b, iteration)
+            time.sleep(wait_ms / 1000.0)
+            iteration += 1
         elif mode == "off":
             strip_off()
-
-        iteration += 1
-        if iteration >= 256:
-            iteration = 0
-        time.sleep(1 / 1000)
 
 
 # init
