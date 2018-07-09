@@ -1,7 +1,7 @@
 from FlightLib import LedLib as led
 import socket
 sock=socket.socket()
-sock.connect(('192.168.1.5', 35001))
+sock.connect(('192.168.1.6', 35001))
 
 try:
     while True:
