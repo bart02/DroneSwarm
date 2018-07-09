@@ -89,12 +89,16 @@ def takeoff(z=1, speed=1, frame_id='fcu_horiz'):
     print("Takeoff completed!")
 
 
-def land(z=0.75):
-    print("Landing!")
-    attitude(z, tolerance=0.2)
+def land(z=0.75, freq=5):
+    telem = get_telemetry(frame_id='aruco_map')
+    print("Pre-Landing!")
+    attitude(z, tolerance=0.25)
     print("Ready to land")
 
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
+    while telem.armed:
+        telem = get_telemetry(frame_id='aruco_map')
+        rospy.sleep(1 / freq)
     print("Land completed!")
 
 
