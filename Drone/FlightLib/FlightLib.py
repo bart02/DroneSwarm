@@ -1,5 +1,4 @@
 # imports
-from __future__ import print_function
 import math
 import sys
 import rospy
@@ -7,12 +6,16 @@ from clever import srv
 from mavros_msgs.srv import SetMode
 
 # init ros node
+print("Initing")
 rospy.init_node('CleverSwarmFlight')
+print("Node inited")
 
 # create proxy service
-get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
 navigate = rospy.ServiceProxy('navigate', srv.Navigate)
 set_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
+get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
+print("Proxy services inited")
+
 
 # variables
 yaw_current = 0
