@@ -3,4 +3,4 @@ import time
 print("Turning led off...")
 
 led.off()
-time.sleep(1)
+time.sleep(3)
