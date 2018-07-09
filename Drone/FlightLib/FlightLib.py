@@ -100,5 +100,4 @@ def land(z=0.75):
 
 if __name__ == "__main__":
     takeoff()
-    reach(1, 1, 1)
     land()
