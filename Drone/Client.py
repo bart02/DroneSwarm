@@ -3,14 +3,18 @@ import socket
 sock=socket.socket()
 sock.connect(('192.168.1.5', 35001))
 
+try:
+    while True:
+        data = str(sock.recv(1024))
 
-while True:
-    data = str(sock.recv(1024))
+        try:
+            eval(str(data))
 
-    try:
-        eval(str(data))
-
-    except:
-        print('er')
-sock.close()
+        except:
+            print('er')
+    sock.close()
+except KeyboardInterrupt:
+    print("Shutting down")
+    led.off()
+    sock.close()
 
