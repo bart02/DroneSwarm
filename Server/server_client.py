@@ -17,7 +17,7 @@ while True:#бесконечный цикл отправки данных
         
         data=conn.recv(2048)
         print(data)
-        data=r''
+        data=b''
     except:
         pass
 
