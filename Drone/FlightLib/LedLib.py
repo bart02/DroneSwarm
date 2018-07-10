@@ -27,6 +27,7 @@ r_prev = 0
 g_prev = 0
 b_prev = 0
 
+l = 0
 wait_ms = 10
 
 
@@ -96,11 +97,12 @@ def fade_to(red, green, blue, wait=20):  # do not working with rainbow (solid co
     mode = "fade_to"
 
 
-def run(red, green, blue, wait=25):
-    global r, g, b, wait_ms, mode
+def run(red, green, blue, length=strip.numPixels(), wait=25):
+    global r, g, b, l, wait_ms, mode
     r = red
     g = green
     b = blue
+    l = length
     wait_ms = wait
     mode = "run"
 
@@ -152,13 +154,16 @@ def strip_fade(r1, g1, b1, r2, g2, b2, frames=51):
     strip_set(Color(r2, g2, b2))
 
 
-def strip_run_step(red, green, blue, iteration):
-    r_delta = red // strip.numPixels()
-    g_delta = green // strip.numPixels()
-    b_delta = blue // strip.numPixels()
+def strip_run_step(red, green, blue, length, iteration):
+    r_delta = red // length
+    g_delta = green // length
+    b_delta = blue // length
     for i in range(strip.numPixels()):
-        n = (i+iteration)%strip.numPixels()
-        strip.setPixelColor(n, Color(red - (r_delta * i), green - (g_delta * i), blue - (b_delta * i)))
+        n = (i+iteration) % length
+        r_fin = max(0, (red - (r_delta * i)))
+        g_fin = max(0, (green - (g_delta * i)))
+        b_fin = max(0, (blue - (b_delta * i)))
+        strip.setPixelColor(n, Color(r_fin, g_fin, b_fin))
     strip.show()
 
 
@@ -197,7 +202,7 @@ def led_thread():
             strip_fade(r_prev, g_prev, b_prev, r, g, b)
             mode = ""
         elif mode == "run":
-            strip_run_step(r, g, b, iteration)
+            strip_run_step(r, g, b, l, iteration)
             time.sleep(wait_ms / 1000.0)
             iteration += 1
         elif mode == "off":
