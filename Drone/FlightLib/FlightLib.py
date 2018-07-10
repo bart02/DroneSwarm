@@ -6,6 +6,7 @@ import sys
 import rospy
 from clever import srv
 from mavros_msgs.srv import SetMode
+from mavros_msgs.srv import CommandBool
 
 
 # init ros node
@@ -19,6 +20,7 @@ def init():
 navigate = rospy.ServiceProxy('navigate', srv.Navigate)
 set_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
+arming = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
 print("Proxy services inited")
 
 
@@ -57,46 +59,91 @@ def capture_position():
     z_current = telem.z
 
 
-def reach(x, y, z, yaw=float('nan'), yaw_rate=0, speed=1, tolerance=0.15, frame_id='aruco_map', freq=5):
+def reach(x, y, z, yaw=float('nan'), yaw_rate=0, speed=1, tolerance=0.15, frame_id='aruco_map', wait_ms=100, timeout=0):
     telem = get_telemetry(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
     print("Reaching point:", "x=", x, ", y=", y, ", z=", z, "yaw=", yaw)
 
     # waiting for completion
+    time = 0
     while get_distance(x, y, z, telem.x, telem.y, telem.z) > tolerance:
+        time += wait_ms
         telem = get_telemetry(frame_id=frame_id)
-        print("Reaching point, telem:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw)
-        rospy.sleep(1 / freq)
+        # print("Reaching point, telem:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw)
+        rospy.sleep(wait_ms / 1000)
+        if timeout != 0 and (time >= timeout):
+            print("Not reached, timed out.")
+            return False
     print("Point reached!")
+    return True
 
 
-def attitude(z, yaw=float('nan'), yaw_rate=0, speed=1, tolerance=0.2, frame_id='aruco_map'):
+def attitude(z, yaw=float('nan'), yaw_rate=0, speed=1, tolerance=0.2, frame_id='aruco_map', timeout=0):
     print("Reaching attitude")
     capture_position()
-    reach(x=x_current, y=y_current, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed, tolerance=tolerance, frame_id=frame_id)
-    print("Attitude reached!")
+    result = reach(x=x_current, y=y_current, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed, tolerance=tolerance, frame_id=frame_id, timeout=timeout)
+    if result:
+        print("Attitude reached!")
+        return True
+    else:
+        print("Attitude not reached, timed out")
+        return False
 
 
-def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz'):
+def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100, timeout=0, timeout_arm=7000):
+    telem = get_telemetry(frame_id=frame_id)
     print("Taking off!")
     navigate(frame_id=frame_id, x=0, y=0, z=z, speed=speed, update_frame=False, auto_arm=True)
-    rospy.sleep(5)
+    time = 0
+    while not telem.armed:
+        time += wait_ms
+        telem = get_telemetry(frame_id=frame_id)
+        rospy.sleep(wait_ms / 1000)
+        if timeout_arm != 0 and (time >= timeout_arm):
+            print("Not armed, timed out. Not ready to flight, fatal error!")
+            return False
+
     print("In air!")
-    attitude(z, yaw, tolerance=0.25)
-    print("Takeoff completed!")
+    rospy.sleep(1)
+    time = 0
+    while telem.z <= z-tolerance:
+        time += wait_ms
+        telem = get_telemetry(frame_id="aruco_map")
+        rospy.sleep(wait_ms / 1000)
+        if timeout != 0 and (time >= timeout):
+            print("Not reached minimal takeoff attitude, trying to resolve...")
+
+    print("Reaching takeoff attitude!")
+    result = attitude(z, yaw, tolerance=0.25)
+    if result:
+        print("Takeoff attitude reached. Takeoff completed!")
+        return True
+    else:
+        print("Not reached takeoff attitude, timed out")
+        return False
 
 
-def land(z=0.75, freq=5):
+def land(z=0.75, wait_ms=100, timeout=15000, timeout_land=10000):
     telem = get_telemetry(frame_id='aruco_map')
     print("Pre-Landing!")
-    attitude(z, tolerance=0.25)
-    print("Ready to land")
+    result = attitude(z, tolerance=0.25, timeout=timeout)
+    if result:
+        print("Ready to land")
+    else:
+        print("Not ready to land, trying autoland mode.")
 
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
+    time = 0
     while telem.armed:
+        time += wait_ms
         telem = get_telemetry(frame_id='aruco_map')
-        rospy.sleep(1 / freq)
+        rospy.sleep(wait_ms / 1000)
+        if timeout_land != 0 and (time >= timeout_land):
+            print("Not autolanded, timed out. Disarming!")
+            arming(False)
+            return False
     print("Land completed!")
+    return True
 
 
 if __name__ == "__main__":
