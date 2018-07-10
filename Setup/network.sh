@@ -1,13 +1,4 @@
 #!/bin/bash
-sed -i 's/192.168.11.1/127.0.0.1/' /home/pi/.bashrc
-sed -i 's/192.168.11.1/127.0.0.1/' /home/pi/catkin_ws/src/clever/clever/launch/mavros.launch
-sed -i 's/192.168.11.1/127.0.0.1/' /home/pi/catkin_ws/src/clever/deploy/roscore.env
-
-export ROS_IP=127.0.0.1
-
-sudo systemctl restart roscore
-sudo systemctl restart clever
-
 read -p 'SSID: ' ssid
 read -sp 'Password: ' pass
 

@@ -1,7 +1,7 @@
 import socket
 import fcntl
 import struct
-from subprocess import check_output
+from subprocess import check_output, call
 
 files = ['/home/pi/.bashrc',
          '/home/pi/catkin_ws/src/clever/clever/launch/mavros.launch',
@@ -31,4 +31,5 @@ ip = get_ip_address('wlan0')
 for fil in files:
     replace(fil, ros_ip, ip)
 
+print "Please, hard reboot the copter"
 # TODO: test it
