@@ -59,7 +59,7 @@ def capture_position():
     z_current = telem.z
 
 
-def reach(x, y, z, yaw=float('nan'), yaw_rate=0, speed=1, tolerance=0.15, frame_id='aruco_map', wait_ms=100, timeout=0):
+def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.15, frame_id='aruco_map', wait_ms=100, timeout=0):
     telem = get_telemetry(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
     print("Reaching point:", "x=", x, ", y=", y, ", z=", z, "yaw=", yaw)
@@ -78,7 +78,7 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0, speed=1, tolerance=0.15, frame_
     return True
 
 
-def attitude(z, yaw=float('nan'), yaw_rate=0, speed=1, tolerance=0.2, frame_id='aruco_map', timeout=0):
+def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.2, frame_id='aruco_map', timeout=0):
     print("Reaching attitude")
     capture_position()
     result = reach(x=x_current, y=y_current, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed, tolerance=tolerance, frame_id=frame_id, timeout=timeout)
@@ -88,6 +88,41 @@ def attitude(z, yaw=float('nan'), yaw_rate=0, speed=1, tolerance=0.2, frame_id='
     else:
         print("Attitude not reached, timed out")
         return False
+
+
+def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100, timeout=0, timeout_yaw=5000):
+    print("Rotating to angle:", yaw)
+    capture_position()
+    result = reach(x=x_current, y=y_current, z=z_current, yaw=yaw, yaw_rate=yaw_rate, frame_id=frame_id, timeout=timeout)
+    if result:
+        print("Point hold, rotating")
+    else:
+        print("Not holded point")
+
+    if not math.isnan(yaw):
+        telem = get_telemetry(frame_id=frame_id)
+        time = 0
+        while abs(yaw-telem.yaw) > tolerance:
+            time += wait_ms
+            telem = get_telemetry(frame_id=frame_id)
+            rospy.sleep(wait_ms / 1000)
+            if timeout_yaw != 0 and (time >= timeout_yaw):
+                print("Not rotated properly")
+                return False
+        return True
+
+
+def spin(yaw_rate=0.2, yaw_final=float('nan'), frame_id='aruco_map', wait_ms=5000):
+    print("Spinning at speed:", yaw_rate)
+    rotate_to(yaw=float('nan'), yaw_rate=yaw_rate, frame_id=frame_id)
+    rospy.sleep(wait_ms / 1000)
+
+    print("Spinning complete on timeout")
+    if not math.isnan(yaw_final):
+        print ("Moving to final angle")
+        result = rotate_to(yaw=float('nan'), yaw_rate=yaw_rate, frame_id=frame_id)
+        return result
+    return True
 
 
 def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100, timeout=0, timeout_arm=7000):
