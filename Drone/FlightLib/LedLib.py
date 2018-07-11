@@ -159,7 +159,7 @@ def strip_run_step(red, green, blue, length, iteration):
     g_delta = green // length
     b_delta = blue // length
     for i in range(strip.numPixels()):
-        n = (i+iteration) % length
+        n = (i+iteration) % strip.numPixels()
         r_fin = max(0, (red - (r_delta * i)))
         g_fin = max(0, (green - (g_delta * i)))
         b_fin = max(0, (blue - (b_delta * i)))
