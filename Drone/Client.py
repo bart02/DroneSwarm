@@ -1,5 +1,5 @@
 from FlightLib import FlightLib as f
-f.init()
+f.init('server')
 
 from FlightLib import LedLib as led
 
