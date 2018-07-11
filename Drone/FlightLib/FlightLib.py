@@ -10,7 +10,7 @@ from mavros_msgs.srv import CommandBool
 
 
 # init ros node
-def init(node_name):
+def init(node_name="CleverSwarmFlight"):
     print("Initing")
     rospy.init_node(node_name)
     print("Node inited")
@@ -165,15 +165,17 @@ def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25
         return False
 
 
-def land(z=0.75, wait_ms=100, timeout=15000, timeout_land=15000):
-    telem = get_telemetry(frame_id='aruco_map')
-    print("Pre-Landing!")
-    result = attitude(z, tolerance=0.25, timeout=timeout)
-    if result:
-        print("Ready to land")
-    else:
-        print("Not ready to land, trying autoland mode.")
+def land(z=0.75, wait_ms=100, timeout=15000, timeout_land=15000, preland=True):
+    if preland:
+        print("Pre-Landing!")
+        result = attitude(z, tolerance=0.25, timeout=timeout)
+        if result:
+            print("Ready to land")
+        else:
+            print("Not ready to land, trying autoland mode.")
 
+    print("Landing!")
+    telem = get_telemetry(frame_id='aruco_map')
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
     time = 0
     while telem.armed:
