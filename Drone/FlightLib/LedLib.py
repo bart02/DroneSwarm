@@ -210,6 +210,6 @@ def led_thread():
 
 # init
 strip.begin()
-t = Thread(target=led_thread)
-t.daemon = True
-t.start()
+t_l = Thread(target=led_thread)
+t_l.daemon = True
+t_l.start()
