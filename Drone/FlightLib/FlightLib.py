@@ -37,7 +37,7 @@ def safety_check():
           "roll=", telem.pitch)
     telem = get_telemetry(frame_id='fcu_horiz')
     print("Telems are:", "V-z=", telem.vz, "voltage=", telem.voltage)
-    ans = raw_input("Are you sure about launch?")
+    raw_input("Are you sure about launch?")
     ans = raw_input("Are you ready to launch? Y/N: ")
     if ans.lower() != "y":
         sys.exit()
