@@ -54,9 +54,9 @@ def capture_position():
     global y_current
     global z_current
 
-    x_current = telem.x
-    y_current = telem.y
-    z_current = telem.z
+    x_current = round(telem.x, 3)
+    y_current = round(telem.y, 3)
+    z_current = round(telem.z, 3)
 
 
 def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.15, frame_id='aruco_map', wait_ms=100,
