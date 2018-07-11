@@ -70,7 +70,7 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.15, fram
     while get_distance(x, y, z, telem.x, telem.y, telem.z) > tolerance:
         time += wait_ms
         telem = get_telemetry(frame_id=frame_id)
-        # print("Reaching point, telem:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw)
+        print("Reaching point, telem:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw)
         rospy.sleep(wait_ms / 1000)
         if timeout != 0 and (time >= timeout):
             print("Not reached, timed out.")
@@ -128,8 +128,8 @@ def spin(yaw_rate=0.2, yaw_final=float('nan'), frame_id='aruco_map', wait_ms=500
     return True
 
 
-def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100, timeout=0,
-            timeout_arm=7000):
+def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100, timeout_init_z=0,
+            timeout_arm=7000, timeout=10000):
     telem = get_telemetry(frame_id=frame_id)
     print("Taking off!")
     navigate(frame_id=frame_id, x=0, y=0, z=z, speed=speed, update_frame=False, auto_arm=True)
@@ -144,19 +144,20 @@ def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25
 
     print("In air!")
     rospy.sleep(1)
-    if timeout != 0:
+    if timeout_init_z != 0:
         time = 0
         while abs(z - telem.z) > tolerance:
             time += wait_ms
             telem = get_telemetry(frame_id=frame_id)
+            print ("Taking off, current z:", z)
             rospy.sleep(wait_ms / 1000)
-            if time >= timeout:
+            if time >= timeout_init_z:
                 print("Not reached minimal takeoff attitude, trying to resolve...")
     else:
         rospy.sleep(5)
 
     print("Reaching takeoff attitude!")
-    result = attitude(z, yaw, tolerance=0.25)
+    result = attitude(z, yaw, tolerance=0.25, timeout=timeout)
     if result:
         print("Takeoff attitude reached. Takeoff completed!")
         return True
