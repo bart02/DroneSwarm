@@ -123,7 +123,7 @@ def spin(yaw_rate=0.2, yaw_final=float('nan'), frame_id='aruco_map', wait_ms=500
     print("Spinning complete on timeout")
     if not math.isnan(yaw_final):
         print("Moving to final angle")
-        result = rotate_to(yaw=float('nan'), yaw_rate=yaw_rate, frame_id=frame_id)
+        result = rotate_to(yaw=yaw_final, yaw_rate=yaw_rate, frame_id=frame_id)
         return result
     return True
 
