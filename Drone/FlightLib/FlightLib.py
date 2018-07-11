@@ -63,7 +63,7 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.15, fram
           timeout=0):
     telem = get_telemetry(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
-    print("Reaching point:", "x=", x, ", y=", y, ", z=", z, "yaw=", yaw)
+    print("Reaching point:", "x=", x, ", y=", y, ", z=", z, ", yaw=", yaw, ", yaw_rate=", yaw_rate)
 
     # waiting for completion
     time = 0
