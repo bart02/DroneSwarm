@@ -110,7 +110,7 @@ def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, frame_id='aruco_map', wait_ms=10
             telem = get_telemetry(frame_id=frame_id)
             rospy.sleep(wait_ms / 1000)
             if timeout_yaw != 0 and (time >= timeout_yaw):
-                print("Not rotated properly")
+                print("Not rotated properly!")
                 return False
         return True
 
@@ -129,7 +129,7 @@ def spin(yaw_rate=0.2, yaw_final=float('nan'), frame_id='aruco_map', wait_ms=500
 
 
 def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100, timeout_init_z=0,
-            timeout_arm=7000, timeout=10000):
+            timeout_arm=7000, timeout=7500):
     telem = get_telemetry(frame_id=frame_id)
     print("Taking off!")
     navigate(frame_id=frame_id, x=0, y=0, z=z, yaw=float('nan'), speed=speed, update_frame=False, auto_arm=True)
@@ -157,7 +157,7 @@ def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25
         rospy.sleep(5)
 
     print("Reaching takeoff attitude!")
-    result = attitude(z, yaw, tolerance=0.25, timeout=timeout)
+    result = attitude(z, yaw=yaw, tolerance=0.25, timeout=timeout)
     if result:
         print("Takeoff attitude reached. Takeoff completed!")
         return True
