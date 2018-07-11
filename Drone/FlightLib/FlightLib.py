@@ -132,7 +132,7 @@ def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25
             timeout_arm=7000, timeout=10000):
     telem = get_telemetry(frame_id=frame_id)
     print("Taking off!")
-    navigate(frame_id=frame_id, x=0, y=0, z=z, speed=speed, update_frame=False, auto_arm=True)
+    navigate(frame_id=frame_id, x=0, y=0, z=z, yaw=float('nan'), speed=speed, update_frame=False, auto_arm=True)
     time = 0
     while not telem.armed:
         time += wait_ms
