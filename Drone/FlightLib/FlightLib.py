@@ -31,12 +31,13 @@ z_current = 0
 
 # functions
 
+# noinspection PyCompatibility
 def safety_check():
-    telem = get_telemetry(frame_id='aruco_map')
-    print("Telems are:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw, "pitch=", telem.pitch,
-          "roll=", telem.pitch)
-    telem = get_telemetry(frame_id='fcu_horiz')
-    print("Telems are:", "V-z=", telem.vz, "voltage=", telem.voltage)
+    telemetry = get_telemetry(frame_id='aruco_map')
+    print("Telems are:", "x=", telemetry.x, ", y=", telemetry.y, ", z=", telemetry.z, "yaw=", telemetry.yaw, "pitch=", telemetry.pitch,
+          "roll=", telemetry.pitch)
+    telemetry = get_telemetry(frame_id='fcu_horiz')
+    print("Telems are:", "V-z=", telemetry.vz, "voltage=", telemetry.voltage)
     raw_input("Are you sure about launch?")
     ans = raw_input("Are you ready to launch? Y/N: ")
     if ans.lower() != "y":
@@ -47,31 +48,32 @@ def get_distance(x1, y1, z1, x2, y2, z2):
     return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2)
 
 
-def capture_position():
-    telem = get_telemetry(frame_id='aruco_map')
+def capture_position(frame_id='aruco_map'):
+    telemetry = get_telemetry(frame_id=frame_id)
 
     global x_current
     global y_current
     global z_current
 
-    x_current = round(telem.x, 3)
-    y_current = round(telem.y, 3)
-    z_current = round(telem.z, 3)
+    x_current = round(telemetry.x, 3)
+    y_current = round(telemetry.y, 3)
+    z_current = round(telemetry.z, 3)
 
 
-def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.15, frame_id='aruco_map', wait_ms=100,
-          timeout=0):
-    telem = get_telemetry(frame_id=frame_id)
+def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100,
+          timeout=7500):
+    
     navigate(frame_id=frame_id, x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
     print("Reaching point:", "x=", x, ", y=", y, ", z=", z, ", yaw=", yaw, ", yaw_rate=", yaw_rate)
 
     # waiting for completion
+    telemetry = get_telemetry(frame_id=frame_id)
     time = 0
-    while get_distance(x, y, z, telem.x, telem.y, telem.z) > tolerance:
-        time += wait_ms
-        telem = get_telemetry(frame_id=frame_id)
-        print("Reaching point, telem:", "x=", telem.x, ", y=", telem.y, ", z=", telem.z, "yaw=", telem.yaw)
+    while get_distance(x, y, z, telemetry.x, telemetry.y, telemetry.z) > tolerance:
+        telemetry = get_telemetry(frame_id=frame_id)
+        print("Reaching point, telemetry:", "x=", telemetry.x, ", y=", telemetry.y, ", z=", telemetry.z, "yaw=", telemetry.yaw)
         rospy.sleep(wait_ms / 1000)
+        time += wait_ms
         if timeout != 0 and (time >= timeout):
             print("Not reached, timed out.")
             return False
@@ -79,80 +81,74 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.15, fram
     return True
 
 
-def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.2, frame_id='aruco_map', timeout=0):
-    print("Reaching attitude")
-    capture_position()
-    result = reach(x=x_current, y=y_current, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed, tolerance=tolerance,
-                   frame_id=frame_id, timeout=timeout)
-    if result:
-        print("Attitude reached!")
-        return True
-    else:
-        print("Attitude not reached, timed out")
-        return False
+def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100, timeout=7500):
+    capture_position(frame_id=frame_id)
+    navigate(frame_id=frame_id, x=x_current, y=y_current, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
+    print("Reaching attitude:", z)
 
-
-def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100, speed=1, timeout=5000):
-    print("Rotating to angle:", yaw)
-    capture_position()
-    navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
-    if not math.isnan(yaw):
-        telem = get_telemetry(frame_id=frame_id)
-        time = 0
-        while abs(yaw - telem.yaw) > tolerance:
-            time += wait_ms
-            telem = get_telemetry(frame_id=frame_id)
-            print("Angle: ", yaw)  # TODO format()
-            rospy.sleep(wait_ms / 1000)
-            if timeout != 0 and (time >= timeout):
-                print("Not rotated properly!")
-                return False
-        return True
-
-
-def spin(yaw_rate=0.2, yaw_final=float('nan'), frame_id='aruco_map', wait_ms=5000):
-    print("Spinning at speed:", yaw_rate)
-    rotate_to(yaw=float('nan'), yaw_rate=yaw_rate, frame_id=frame_id)
-    rospy.sleep(wait_ms / 1000)
-
-    print("Spinning complete on timeout")
-    if not math.isnan(yaw_final):
-        print("Moving to final angle")
-        result = rotate_to(yaw=yaw_final, yaw_rate=yaw_rate, frame_id=frame_id)
-        return result
+    # waiting for completion
+    telemetry = get_telemetry(frame_id=frame_id)
+    time = 0
+    while abs(z-telemetry.z) > tolerance:
+        telemetry = get_telemetry(frame_id=frame_id)
+        print("Reaching point, telemetry:", ", z=", telemetry.z)
+        rospy.sleep(wait_ms / 1000)
+        time += wait_ms
+        if timeout != 0 and (time >= timeout):
+            print("Not reached attitude, timed out.")
+            return False
+    print("Attitude reached!")
     return True
 
 
-def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100, timeout_init_z=0,
-            timeout_arm=7000, timeout=7500):
-    telem = get_telemetry(frame_id=frame_id)
-    print("Taking off!")
-    navigate(frame_id=frame_id, x=0, y=0, z=z, yaw=float('nan'), speed=speed, update_frame=False, auto_arm=True)
+def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map', wait_ms=100, timeout=5000):
+    capture_position()
+    navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
+    print("Reaching angle:", yaw)
+
+    # waiting for completion
+    telemetry = get_telemetry(frame_id=frame_id)
     time = 0
-    while not telem.armed:
+    while abs(yaw - telemetry.yaw) > tolerance:
         time += wait_ms
-        telem = get_telemetry(frame_id=frame_id)
+        telemetry = get_telemetry(frame_id=frame_id)
+        print("Angle: ", yaw)  # TODO format()
         rospy.sleep(wait_ms / 1000)
+        if timeout != 0 and (time >= timeout):
+            print("Not rotated properly!")
+            return False
+    return True
+
+
+def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
+    print("Spinning at speed:", yaw_rate)
+    navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=float('nan'), yaw_rate=yaw_rate, speed=speed)
+    rospy.sleep(timeout / 1000)
+
+    print("Spinning complete on timeout")
+    return True
+
+
+def takeoff(z=1, z_coefficient=0.9, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100,
+            timeout_arm=7500, timeout=7500):
+    print("Taking off!")
+    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed, update_frame=False, auto_arm=True)
+
+    telemetry = get_telemetry(frame_id=frame_id)
+    time = 0
+    while not telemetry.armed:
+        telemetry = get_telemetry(frame_id=frame_id)
+        rospy.sleep(wait_ms / 1000)
+        time += wait_ms
         if timeout_arm != 0 and (time >= timeout_arm):
             print("Not armed, timed out. Not ready to flight, fatal error!")
-            return False
+            sys.exit()
 
     print("In air!")
-    rospy.sleep(1)
-    if timeout_init_z != 0:
-        time = 0
-        while abs(z - telem.z) > tolerance:
-            time += wait_ms
-            telem = get_telemetry(frame_id=frame_id)
-            print ("Taking off, current z:", z)
-            rospy.sleep(wait_ms / 1000)
-            if time >= timeout_init_z:
-                print("Not reached minimal takeoff attitude, trying to resolve...")
-    else:
-        rospy.sleep(5)
+    rospy.sleep(5)
 
     print("Reaching takeoff attitude!")
-    result = attitude(z, yaw=yaw, tolerance=0.25, timeout=timeout)
+    result = attitude(z, yaw=yaw, tolerance=tolerance, timeout=timeout)
     if result:
         print("Takeoff attitude reached. Takeoff completed!")
         return True
@@ -161,7 +157,7 @@ def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25
         return False
 
 
-def land(z=0.75, wait_ms=100, timeout=15000, timeout_land=15000, preland=True):
+def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=15000, preland=True):
     if preland:
         print("Pre-Landing!")
         result = attitude(z, tolerance=0.25, timeout=timeout)
@@ -170,14 +166,15 @@ def land(z=0.75, wait_ms=100, timeout=15000, timeout_land=15000, preland=True):
         else:
             print("Not ready to land, trying autoland mode.")
 
-    print("Landing!")
-    telem = get_telemetry(frame_id='aruco_map')
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
+    print("Landing!")
+
+    telemetry = get_telemetry(frame_id='aruco_map')
     time = 0
-    while telem.armed:
-        time += wait_ms
-        telem = get_telemetry(frame_id='aruco_map')
+    while telemetry.armed:
+        telemetry = get_telemetry(frame_id='aruco_map')
         rospy.sleep(wait_ms / 1000)
+        time += wait_ms
         if timeout_land != 0 and (time >= timeout_land):
             print("Not autolanded, timed out. Disarming!")
             arming(False)
