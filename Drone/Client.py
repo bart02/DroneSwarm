@@ -1,4 +1,9 @@
+from FlightLib import FlightLib as f
+f.init()
+
 from FlightLib import LedLib as led
+
+
 import socket
 sock=socket.socket()
 sock.connect(('192.168.1.6', 35001))
