@@ -165,7 +165,7 @@ def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25
         return False
 
 
-def land(z=0.75, wait_ms=100, timeout=15000, timeout_land=10000):
+def land(z=0.75, wait_ms=100, timeout=15000, timeout_land=15000):
     telem = get_telemetry(frame_id='aruco_map')
     print("Pre-Landing!")
     result = attitude(z, tolerance=0.25, timeout=timeout)
