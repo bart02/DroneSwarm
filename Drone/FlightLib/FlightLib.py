@@ -10,9 +10,9 @@ from mavros_msgs.srv import CommandBool
 
 
 # init ros node
-def init():
+def init(node_name):
     print("Initing")
-    rospy.init_node('CleverSwarmFlight')
+    rospy.init_node(node_name)
     print("Node inited")
 
 
