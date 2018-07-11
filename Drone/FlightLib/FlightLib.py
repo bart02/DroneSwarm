@@ -144,8 +144,8 @@ def takeoff(z=1, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25
 
     print("In air!")
     rospy.sleep(1)
-    time = 0
     if timeout != 0:
+        time = 0
         while abs(z - telem.z) > tolerance:
             time += wait_ms
             telem = get_telemetry(frame_id=frame_id)
