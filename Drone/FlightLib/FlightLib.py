@@ -92,24 +92,19 @@ def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1, tolerance=0.2, frame_id
         return False
 
 
-def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100, timeout=0, timeout_yaw=5000):
+def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100, speed=1, timeout=5000):
     print("Rotating to angle:", yaw)
     capture_position()
-    result = reach(x=x_current, y=y_current, z=z_current, yaw=yaw, yaw_rate=yaw_rate, frame_id=frame_id,
-                   timeout=timeout)
-    if result:
-        print("Point hold, rotating")
-    else:
-        print("Not holded point")
-
+    navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
     if not math.isnan(yaw):
         telem = get_telemetry(frame_id=frame_id)
         time = 0
         while abs(yaw - telem.yaw) > tolerance:
             time += wait_ms
             telem = get_telemetry(frame_id=frame_id)
+            print("Angle: ", yaw)  # TODO format()
             rospy.sleep(wait_ms / 1000)
-            if timeout_yaw != 0 and (time >= timeout_yaw):
+            if timeout != 0 and (time >= timeout):
                 print("Not rotated properly!")
                 return False
         return True
