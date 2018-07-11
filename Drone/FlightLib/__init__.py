@@ -1,1 +1,1 @@
-__all__ = ['FlightLib', 'LedLib']
+__all__ = ['FlightLib', 'LedLib', 'TelemLib']
