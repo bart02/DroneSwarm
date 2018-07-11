@@ -1,7 +1,7 @@
 import time
 
 from FlightLib import FlightLib as f
-f.init()
+f.init('CleverSwarmFlight')
 from FlightLib import LedLib as led
 
 led.fill(255, 255, 255)
