@@ -1,7 +1,7 @@
 import socket
 import fcntl
 import struct
-from subprocess import check_output, call
+import subprocess
 
 files = ['/home/pi/.bashrc',
          '/home/pi/catkin_ws/src/clever/clever/launch/mavros.launch',
@@ -26,7 +26,8 @@ def replace(file, old, new):
         f.truncate()
 
 
-ros_ip = check_output("echo $ROS_IP")
+ros_ip = subprocess.check_output("echo $ROS_IP", shell=True)
+ros_ip = ros_ip.replace('\n', '')
 ip = get_ip_address('wlan0')
 for fil in files:
     replace(fil, ros_ip, ip)
