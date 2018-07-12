@@ -1,25 +1,11 @@
-from bs4 import BeautifulStoneSoup
 import xmltodict
 from pprint import pprint
-
-try:
-    import xml.etree.cElementTree as ElementTree
-except ImportError:
-    import xml.etree.ElementTree as ElementTree
-
 
 xml = '''<DroneSwarm>
     <time t="1.03">
         <copter n="1">
             <reach x="5" y="6" z="1" />
-        </copter>
-        <swarm>
             <led function="rainbow" />
-        </swarm>
-    </time>
-    <time t="1.05">
-        <copter n="1">
-            <reach x="5" y="6" z="1" />
         </copter>
         <swarm>
             <led function="rainbow" />
@@ -32,8 +18,38 @@ xml = '''<DroneSwarm>
 
 xmldict = xmltodict.parse(xml)
 xmldict = dict(xmldict['DroneSwarm'])['time']
-for e in xmldict:
-    time = e['@t']
-    for copter in e['copter']:
-        print e['copter'][copter]
+ready = {}
+if type(xmldict) != list:
+    xmldict = [xmldict]
+for t in xmldict:
+    time = float(t['@t'])
+    ready[time] = {}
+    # print time
+    if type(t['copter']) != list:
+        t['copter'] = [t['copter']]
+    for copter in t['copter']:
+        copternum = int(copter['@n'])
+        # print copternum
+        ready[time][copternum] = []
+        copter.pop('@n')
+        for action in copter:
+            actiondict = {}
+            for prm in dict(copter[action]):
+                val = dict(copter[action])[prm]
+                prm = prm.replace('@', '')
+                actiondict[prm] = val
+            # print {action: actiondict}
+            ready[time][copternum].append({action: actiondict})
 
+    swarm = t['swarm']
+    copternum = 0
+    ready[time][copternum] = []
+    for action in swarm:
+        actiondict = {}
+        for prm in dict(swarm[action]):
+            val = dict(swarm[action])[prm]
+            prm = prm.replace('@', '')
+            actiondict[prm] = val
+        # print {action: actiondict}
+        ready[time][copternum].append({action: actiondict})
+pprint(ready)
