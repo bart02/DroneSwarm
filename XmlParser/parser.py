@@ -13,7 +13,9 @@ xml = '''<DroneSwarm>
     </time>
 </DroneSwarm>'''
 
-
+xmlfile = open('xml.xml', 'r')
+xml = xmlfile.read().strip()
+xmlfile.close()
 
 
 xmldict = xmltodict.parse(xml)
