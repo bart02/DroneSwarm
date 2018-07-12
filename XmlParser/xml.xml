@@ -1,0 +1,10 @@
+<DroneSwarm>
+    <time t="1.03">
+        <copter n="1">
+            <reach x="5" y="6" z="1" />
+        </copter>
+        <swarm>
+            <led mode="rainbow" />
+        </swarm>
+    </time>
+</DroneSwarm>
