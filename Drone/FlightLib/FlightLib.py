@@ -34,7 +34,8 @@ z_current = 0
 # noinspection PyCompatibility
 def safety_check():
     telemetry = get_telemetry(frame_id='aruco_map')
-    print("Telems are:", "x=", telemetry.x, ", y=", telemetry.y, ", z=", telemetry.z, "yaw=", telemetry.yaw, "pitch=", telemetry.pitch,
+    print("Telems are:", "x=", telemetry.x, ", y=", telemetry.y, ", z=", telemetry.z, "yaw=", telemetry.yaw, "pitch=",
+          telemetry.pitch,
           "roll=", telemetry.pitch)
     telemetry = get_telemetry(frame_id='fcu_horiz')
     print("Telems are:", "V-z=", telemetry.vz, "voltage=", telemetry.voltage)
@@ -62,40 +63,42 @@ def capture_position(frame_id='aruco_map'):
 
 def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100,
           timeout=7500):
-    
     navigate(frame_id=frame_id, x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
-    print("Reaching point:", "x=", x, ", y=", y, ", z=", z, ", yaw=", yaw, ", yaw_rate=", yaw_rate)
+    print('Reaching point | x: ', '{:.3f}'.format(x), ' y: ', '{:.3f}'.format(y), ' z: ', '{:.3f}'.format(z), ' yaw: ',
+          '{:.3f}'.format(yaw), sep='')
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
     time = 0
     while get_distance(x, y, z, telemetry.x, telemetry.y, telemetry.z) > tolerance:
         telemetry = get_telemetry(frame_id=frame_id)
-        print("Reaching point, telemetry:", "x=", telemetry.x, ", y=", telemetry.y, ", z=", telemetry.z, "yaw=", telemetry.yaw)
+        print('Reaching point | Telemetry | x: ', '{:.3f}'.format(telemetry.x), ' y: ', '{:.3f}'.format(telemetry.y),
+              ' z: ', '{:.3f}'.format(telemetry.z), ' yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
         rospy.sleep(wait_ms / 1000)
         time += wait_ms
         if timeout != 0 and (time >= timeout):
-            print("Not reached, timed out.")
+            print('Reaching point | Timed out! | t: ', time, sep='')
             return False
     print("Point reached!")
     return True
 
 
-def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100, timeout=7500):
+def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100,
+             timeout=7500):
     capture_position(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x_current, y=y_current, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
-    print("Reaching attitude:", z)
+    print('Reaching attitude | z: ', '{:.3f}'.format(z), ' yaw: ', '{:.3f}'.format(yaw), sep='')
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
     time = 0
-    while abs(z-telemetry.z) > tolerance:
+    while abs(z - telemetry.z) > tolerance:
         telemetry = get_telemetry(frame_id=frame_id)
-        print("Reaching point, telemetry:", ", z=", telemetry.z)
+        print('Reaching attitude | Telemetry | z: ', '{:.3f}'.format(telemetry.z), ' yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
         rospy.sleep(wait_ms / 1000)
         time += wait_ms
         if timeout != 0 and (time >= timeout):
-            print("Not reached attitude, timed out.")
+            print('Reaching attitude | Timed out! | t: ', time, sep='')
             return False
     print("Attitude reached!")
     return True
@@ -104,7 +107,7 @@ def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_
 def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map', wait_ms=100, timeout=5000):
     capture_position(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
-    print("Reaching angle:", yaw)
+    print('Reaching angle | yaw: ', '{:.3f}'.format(yaw), sep='')
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
@@ -112,10 +115,10 @@ def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map',
     while abs(yaw - telemetry.yaw) > tolerance:
         time += wait_ms
         telemetry = get_telemetry(frame_id=frame_id)
-        print("Angle: ", yaw)  # TODO format()
+        print('Reaching angle | Telemetry | yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
         rospy.sleep(wait_ms / 1000)
         if timeout != 0 and (time >= timeout):
-            print("Not rotated properly!")
+            print('Reaching angle | Timed out! | t: ', time, sep='')
             return False
     return True
 
@@ -123,18 +126,19 @@ def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map',
 def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
     capture_position(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=float('nan'), yaw_rate=yaw_rate, speed=speed)
-    print("Spinning at speed:", yaw_rate)
+    print('Spinning at speed | yaw_rate: ', '{:.3f}'.format(yaw_rate), sep='')
     rospy.sleep(timeout / 1000)
 
     navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=float('nan'), yaw_rate=0.0, speed=speed)
-    print("Spinning complete on timeout")
+    print('Spinning complete | Timeout | t: ', time, sep='')
     return True
 
 
 def takeoff(z=1, z_coefficient=0.9, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100,
             timeout_arm=7500, timeout=7500):
     print("Taking off!")
-    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed, update_frame=False, auto_arm=True)
+    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed, update_frame=False,
+             auto_arm=True)
 
     telemetry = get_telemetry(frame_id=frame_id)
     time = 0
@@ -143,7 +147,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1, yaw=float('nan'), frame_id='fcu_hor
         rospy.sleep(wait_ms / 1000)
         time += wait_ms
         if timeout_arm != 0 and (time >= timeout_arm):
-            print("Not armed, timed out. Not ready to flight, fatal error!")
+            print("Not armed, timed out. Not ready to flight, exiting!")
             sys.exit()
 
     print("In air!")
