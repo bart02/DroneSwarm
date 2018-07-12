@@ -163,7 +163,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
         return False
 
 
-def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=15000, preland=True):
+def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=5000, preland=True):
     if preland:
         print("Pre-Landing!")
         result = attitude(z, tolerance=0.25, timeout=timeout)
