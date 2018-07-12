@@ -102,7 +102,7 @@ def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_
 
 
 def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map', wait_ms=100, timeout=5000):
-    capture_position()
+    capture_position(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
     print("Reaching angle:", yaw)
 
@@ -121,10 +121,12 @@ def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map',
 
 
 def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
-    print("Spinning at speed:", yaw_rate)
+    capture_position(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=float('nan'), yaw_rate=yaw_rate, speed=speed)
+    print("Spinning at speed:", yaw_rate)
     rospy.sleep(timeout / 1000)
 
+    navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=float('nan'), yaw_rate=0.0, speed=speed)
     print("Spinning complete on timeout")
     return True
 
@@ -176,14 +178,14 @@ def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=15000, preland=True):
         rospy.sleep(wait_ms / 1000)
         time += wait_ms
         if timeout_land != 0 and (time >= timeout_land):
-            print("Not autolanded, timed out. Disarming!")
+            print("Not detected autoland, timed out. Disarming!")
             arming(False)
             return False
     print("Land completed!")
     return True
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # only if run FlightLib directly
     safety_check()
     takeoff()
     land()
