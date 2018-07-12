@@ -134,7 +134,7 @@ def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
     return True
 
 
-def takeoff(z=1, z_coefficient=0.9, speed=1, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100,
+def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100,
             timeout_arm=7500, timeout=7500):
     print("Taking off!")
     navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed, update_frame=False,
