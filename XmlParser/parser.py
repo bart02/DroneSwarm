@@ -1,20 +1,42 @@
 import xmltodict
 from pprint import pprint
 
+types = {
+    'x': float,
+    'y': float,
+    'z': float,
+    'yaw': float,
+    'yaw_rate': float,
+    'speed': float,
+    'tolerance': float,
+    'frame_id': str,
+    'wait_ms': int,
+    'timeout': int,
+    'z_coefficient': float,
+    'timeout_arm': int,
+    'timeout_land': int,
+    'preland': bool,
+
+}
+
 xml = '''<DroneSwarm>
     <time t="1.03">
         <copter n="1">
             <reach x="5" y="6" z="1" />
-            <led function="rainbow" />
         </copter>
         <swarm>
-            <led function="rainbow" />
+            <led mode="rainbow" />
+        </swarm>
+    </time><time t="4.20">
+        <copter n="3">
+            <led mode="blink" r="255" g="0" b="100"/>
+        </copter>
+        <swarm>
+            <circle x="1" z="1.5" y="2" r = "3"/>
         </swarm>
     </time>
+
 </DroneSwarm>'''
-
-
-
 
 xmldict = xmltodict.parse(xml)
 xmldict = dict(xmldict['DroneSwarm'])['time']
@@ -36,10 +58,14 @@ for t in xmldict:
             actiondict = {}
             for prm in dict(copter[action]):
                 val = dict(copter[action])[prm]
-                prm = prm.replace('@', '')
-                actiondict[prm] = val
+                prm = str(prm.replace('@', ''))
+                try:
+                    actiondict[prm] = types[prm](val)
+                except KeyError:
+                    print "Types hasn't got " + prm + ', use str.'
+                    actiondict[prm] = str(val)
             # print {action: actiondict}
-            ready[time][copternum].append({action: actiondict})
+            ready[time][copternum].append({str(action): actiondict})
 
     swarm = t['swarm']
     copternum = 0
@@ -48,8 +74,12 @@ for t in xmldict:
         actiondict = {}
         for prm in dict(swarm[action]):
             val = dict(swarm[action])[prm]
-            prm = prm.replace('@', '')
-            actiondict[prm] = val
+            prm = str(prm.replace('@', ''))
+            try:
+                actiondict[prm] = types[prm](val)
+            except KeyError:
+                print "Types hasn't got " + prm + ', use str.'
+                actiondict[prm] = str(val)
         # print {action: actiondict}
-        ready[time][copternum].append({action: actiondict})
+        ready[time][copternum].append({str(action): actiondict})
 pprint(ready)
