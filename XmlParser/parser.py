@@ -19,29 +19,28 @@ types = {
 
 }
 
-xml = '''<DroneSwarm>
-    <time t="1.03">
-        <copter n="1">
-            <reach x="5" y="6" z="1" />
-        </copter>
-        <swarm>
-            <led mode="rainbow" />
-        </swarm>
-    </time><time t="4.20">
-        <copter n="3">
-            <led mode="blink" r="255" g="0" b="100"/>
-        </copter>
-        <swarm>
-            <circle x="1" z="1.5" y="2" r = "3"/>
-        </swarm>
-    </time>
+# xml = '''<DroneSwarm>
+#     <time t="1.03">
+#         <copter n="1">
+#             <reach x="5" y="6" z="1" />
+#         </copter>
+#         <swarm>
+#             <led mode="rainbow" />
+#         </swarm>
+#     </time><time t="4.20">
+#         <copter n="3">
+#             <led mode="blink" r="255" g="0" b="100"/>
+#         </copter>
+#         <swarm>
+#             <circle x="1" z="1.5" y="2" r = "3"/>
+#         </swarm>
+#     </time>
+#
+# </DroneSwarm>'''
 
-</DroneSwarm>'''
 
-xmlfile = open('xml.xml', 'r')
-xml = xmlfile.read().strip()
-xmlfile.close()
-
+with open('xml.xml', 'r+') as f:
+    xml = f.read().strip()
 
 xmldict = xmltodict.parse(xml)
 xmldict = dict(xmldict['DroneSwarm'])['time']
