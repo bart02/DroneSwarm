@@ -6,5 +6,13 @@
         <swarm>
             <led mode="rainbow" />
         </swarm>
+    </time><time t="4.20">
+        <copter n="3">
+            <led mode="blink" r="255" g="0" b="100"/>
+        </copter>
+        <swarm>
+            <circle x="1" z="1.5" y="2" r = "3"/>
+        </swarm>
     </time>
+
 </DroneSwarm>
