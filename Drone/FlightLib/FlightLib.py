@@ -134,8 +134,8 @@ def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
     return True
 
 
-def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=100,
-            timeout_arm=7500, timeout=7500):
+def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=50,
+            timeout_arm=5000, timeout=7500):
     print("Taking off!")
     navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed, update_frame=False,
              auto_arm=True)
@@ -151,7 +151,17 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
             sys.exit()
 
     print("In air!")
-    rospy.sleep(5)
+    rospy.sleep(0.25)
+    telemetry = get_telemetry(frame_id="aruco_map")
+    time = 0
+    while z - tolerance > telemetry.z:
+        telemetry = get_telemetry(frame_id="aruco_map")
+        print('Taking off | Telemetry | z: ', '{:.3f}'.format(telemetry.z), sep='')
+        rospy.sleep(wait_ms / 1000)
+        time += wait_ms
+        if timeout != 0 and (time >= timeout):
+            print('Takeoff | Timed out! | t: ', time, sep='')
+            return False
 
     print("Reaching takeoff attitude!")
     result = attitude(z, yaw=yaw, tolerance=tolerance, timeout=timeout)
@@ -163,7 +173,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
         return False
 
 
-def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=15000, preland=True):
+def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=5000, preland=True):
     if preland:
         print("Pre-Landing!")
         result = attitude(z, tolerance=0.25, timeout=timeout)
@@ -173,12 +183,12 @@ def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=15000, preland=True):
             print("Not ready to land, trying autoland mode.")
 
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
-    print("Landing!")
-
     telemetry = get_telemetry(frame_id='aruco_map')
     time = 0
     while telemetry.armed:
         telemetry = get_telemetry(frame_id='aruco_map')
+        print('Landing | Telemetry | z: ', '{:.3f}'.format(telemetry.z), ' armed: ', '{:.3f}'.format(telemetry.armed),
+              sep='')
         rospy.sleep(wait_ms / 1000)
         time += wait_ms
         if timeout_land != 0 and (time >= timeout_land):
