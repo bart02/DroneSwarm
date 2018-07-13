@@ -223,7 +223,7 @@ def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=5000, preland=True):
     time = 0
     while telemetry.armed:
         telemetry = get_telemetry(frame_id='aruco_map')
-        print('Landing | Telemetry | z: ', '{:.3f}'.format(telemetry.z), telemetry.armed, sep='')
+        print('Landing | Telemetry | z: ', '{:.3f}'.format(telemetry.z), ' armed: ', telemetry.armed, sep='')
         rospy.sleep(wait_ms / 1000)
         time += wait_ms
         if timeout_land != 0 and (time >= timeout_land):
