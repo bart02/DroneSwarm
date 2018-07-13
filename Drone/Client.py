@@ -3,7 +3,7 @@ f.init('server')
 
 from FlightLib import LedLib as led
 
-
+n=True
 import socket
 sock=socket.socket()
 sock.connect(('192.168.1.6', 35001))
@@ -13,7 +13,8 @@ try:
         data = str(sock.recv(1024))
         print(data)
         try:
-            eval(str(data))
+            n=eval(str(data))
+            socket.send(data+str(n))
         except Exception as e:
             print(e)
     sock.close()
