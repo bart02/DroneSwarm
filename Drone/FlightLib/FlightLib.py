@@ -34,17 +34,18 @@ z_current = 0
 # functions
 
 # noinspection PyCompatibility
-def safety_check():
+def safety_check(confirm=True):
     telemetry = get_telemetry(frame_id='aruco_map')
     print("Telems are:", "x=", telemetry.x, ", y=", telemetry.y, ", z=", telemetry.z, "yaw=", telemetry.yaw, "pitch=",
           telemetry.pitch,
           "roll=", telemetry.pitch)
     telemetry = get_telemetry(frame_id='fcu_horiz')
     print("Telems are:", "V-z=", telemetry.vz, "voltage=", telemetry.voltage)
-    raw_input("Are you sure about launch?")
-    ans = raw_input("Are you ready to launch? Y/N: ")
-    if ans.lower() != "y":
-        sys.exit()
+    if confirm:
+        raw_input("Are you sure about launch?")
+        ans = raw_input("Are you ready to launch? Y/N: ")
+        if ans.lower() != "y":
+            sys.exit()
 
 
 def get_distance(x1, y1, z1, x2, y2, z2):
@@ -133,7 +134,7 @@ def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
     rospy.sleep(timeout / 1000)
 
     navigate(frame_id=frame_id, x=x_current, y=y_current, z=z_current, yaw=float('nan'), yaw_rate=0.0, speed=speed)
-    print('Spinning complete | Timeout | t: ', time, sep='')
+    print('Spinning complete | Timeout | t: ', timeout, sep='')
     return True
 
 
