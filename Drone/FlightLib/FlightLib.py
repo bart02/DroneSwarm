@@ -217,8 +217,12 @@ def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=5000, preland=True):
         else:
             print("Not ready to land, trying autoland mode.")
 
-    set_mode(base_mode=0, custom_mode='AUTO.LAND')
     telemetry = get_telemetry(frame_id='aruco_map')
+    if telemetry.mode == "STABILIZED":
+        print ("Not in OFFBOARD mode, probably intercepted! | Not preforming autoland.")
+        return False
+
+    set_mode(base_mode=0, custom_mode='AUTO.LAND')
     time = 0
     while telemetry.armed:
         telemetry = get_telemetry(frame_id='aruco_map')
