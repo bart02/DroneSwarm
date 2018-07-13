@@ -18,9 +18,11 @@ def init(node_name="CleverSwarmFlight"):
 
 # create proxy service
 navigate = rospy.ServiceProxy('navigate', srv.Navigate)
+set_position = rospy.ServiceProxy('set_position', srv.SetPosition)
 set_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
 arming = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
+
 print("Proxy services inited")
 
 # variables
@@ -134,6 +136,20 @@ def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
     return True
 
 
+def circle(x_point, y_point, z_point, r, speed=0.25, angle_init=0.0, angle_max=math.pi * 2, yaw=float('nan'), yaw_rate=0.0, frame_id='aruco_map', wait_ms=100):
+    rate = rospy.Rate(1.0/wait_ms)
+    delta = (wait_ms / 1000)*speed
+    angle = angle_init
+    while angle <= angle_max+angle_init:
+        angle += delta
+        x = (math.sin(angle)*r)+x_point
+        y = (math.cos(angle)*r)+y_point
+        z = z_point
+        # print (x, y)
+        set_position(x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, frame_id=frame_id)
+        rate.sleep()
+
+
 def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=50,
             timeout_arm=5000, timeout=7500):
     print("Taking off!")
@@ -151,7 +167,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
             sys.exit()
 
     print("In air!")
-    rospy.sleep(0.25)
+    rospy.sleep(wait_ms*3)
     telemetry = get_telemetry(frame_id="aruco_map")
     time = 0
     while z - tolerance > telemetry.z:
