@@ -171,9 +171,9 @@ def flip(flip_roll=True, flip_pith=False, invert_roll=False, invert_pitch=True):
 
 
 def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=50,
-            timeout_arm=5000, timeout=7500):
+            timeout_arm=5000, timeout_fcu=3000, timeout=7500):
     print("Taking off!")
-    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed, update_frame=False,
+    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=0.5, update_frame=False,
              auto_arm=True)
 
     telemetry = get_telemetry(frame_id=frame_id)
@@ -195,7 +195,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
         print('Taking off | Telemetry | z: ', '{:.3f}'.format(telemetry.z), sep='')
         rospy.sleep(wait_ms / 1000)
         time += wait_ms
-        if timeout != 0 and (time >= timeout):
+        if timeout_fcu != 0 and (time >= timeout_fcu):
             print('Takeoff | Timed out! | t: ', time, sep='')
 
     print("Reaching takeoff attitude!")
