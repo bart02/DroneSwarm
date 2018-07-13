@@ -165,6 +165,10 @@ def circle(x_point, y_point, z_point, r, speed=0.25, angle_init=0.0, angle_max=m
     print("Ended moving in circle")
 
 
+def flip(flip_roll=True, flip_pith=False, invert_roll=False, invert_pitch=True):
+    telemetry = get_telemetry(frame_id=frame_id)
+
+
 def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=50,
             timeout_arm=5000, timeout=7500):
     print("Taking off!")
@@ -182,7 +186,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
             sys.exit()
 
     print("In air!")
-    rospy.sleep(wait_ms)
+    rospy.sleep(wait_ms*5)
     telemetry = get_telemetry(frame_id="aruco_map")
     time = 0
     while z - tolerance > telemetry.z:
