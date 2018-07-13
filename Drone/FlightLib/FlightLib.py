@@ -197,7 +197,6 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
         time += wait_ms
         if timeout != 0 and (time >= timeout):
             print('Takeoff | Timed out! | t: ', time, sep='')
-            return False
 
     print("Reaching takeoff attitude!")
     result = attitude(z, yaw=yaw, tolerance=tolerance, timeout=timeout)
