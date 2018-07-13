@@ -162,6 +162,7 @@ def circle(x_point, y_point, z_point, r, speed=0.25, angle_init=0.0, angle_max=m
 
         set_position(x=x, y=y, z=z_point, yaw=yaw, yaw_rate=yaw_rate, frame_id=frame_id)
         rate.sleep()
+    print("Ended moving in circle")
 
 
 def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=50,
