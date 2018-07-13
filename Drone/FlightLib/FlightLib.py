@@ -187,10 +187,10 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
 
     print("In air!")
     rospy.sleep(wait_ms*5)
-    telemetry = get_telemetry(frame_id="aruco_map")
+    telemetry = get_telemetry(frame_id='aruco_map')
     time = 0
     while z - tolerance > telemetry.z:
-        telemetry = get_telemetry(frame_id="aruco_map")
+        telemetry = get_telemetry(frame_id='aruco_map')
         print('Taking off | Telemetry | z: ', '{:.3f}'.format(telemetry.z), sep='')
         rospy.sleep(wait_ms / 1000)
         time += wait_ms
