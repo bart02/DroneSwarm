@@ -186,7 +186,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
             sys.exit()
 
     print("In air!")
-    rospy.sleep(wait_ms*5)
+    rospy.sleep((wait_ms * 2) / 1000)
     telemetry = get_telemetry(frame_id='aruco_map')
     time = 0
     while z - tolerance > telemetry.z:
