@@ -23,9 +23,9 @@ def telemetry_thread():
     sock.connect(('192.168.1.6', 35002))
     while True:
         telemetry = get_telemetry(frame_id='aruco_map')
-        x = bytes(str(round(telemetry.x, 3)), 'utf-8')
-        y = bytes(str(round(telemetry.y, 3)), 'utf-8')
-        z = bytes(str(round(telemetry.z, 3)), 'utf-8')
+        x = bytes(str(round(telemetry.x, 3)))
+        y = bytes(str(round(telemetry.y, 3)))
+        z = bytes(str(round(telemetry.z, 3)))
         data = x + b',' + y + b',' + z
         sock.send(data)
 
