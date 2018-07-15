@@ -19,6 +19,7 @@ def init(node_name="CleverSwarmFlight"):
 # create proxy service
 navigate = rospy.ServiceProxy('navigate', srv.Navigate)
 set_position = rospy.ServiceProxy('set_position', srv.SetPosition)
+set_rates = rospy.ServiceProxy('/set_rates', srv.SetRates)
 set_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 get_telemetry = rospy.ServiceProxy('get_telemetry', srv.GetTelemetry)
 arming = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
@@ -72,16 +73,18 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, fra
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
-    time = 0
+    rate = rospy.Rate(1.0 / wait_ms)
+    time_start = rospy.get_rostime()
     while get_distance(x, y, z, telemetry.x, telemetry.y, telemetry.z) > tolerance:
         telemetry = get_telemetry(frame_id=frame_id)
         print('Reaching point | Telemetry | x: ', '{:.3f}'.format(telemetry.x), ' y: ', '{:.3f}'.format(telemetry.y),
               ' z: ', '{:.3f}'.format(telemetry.z), ' yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
-        rospy.sleep(wait_ms / 1000)
-        time += wait_ms
+
+        time = (rospy.get_rostime()-time_start).to_sec() * 1000
         if timeout != 0 and (time >= timeout):
             print('Reaching point | Timed out! | t: ', time, sep='')
             return False
+        rate.sleep()
     print("Point reached!")
     return True
 
@@ -94,16 +97,18 @@ def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
-    time = 0
+    rate = rospy.Rate(1.0 / wait_ms)
+    time_start = rospy.get_rostime()
     while abs(z - telemetry.z) > tolerance:
         telemetry = get_telemetry(frame_id=frame_id)
         print('Reaching attitude | Telemetry | z: ', '{:.3f}'.format(telemetry.z), ' yaw: ',
               '{:.3f}'.format(telemetry.yaw), sep='')
-        rospy.sleep(wait_ms / 1000)
-        time += wait_ms
+
+        time = (rospy.get_rostime()-time_start).to_sec() * 1000
         if timeout != 0 and (time >= timeout):
             print('Reaching attitude | Timed out! | t: ', time, sep='')
             return False
+        rate.sleep()
     print("Attitude reached!")
     return True
 
@@ -115,15 +120,17 @@ def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map',
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
-    time = 0
+    rate = rospy.Rate(1.0 / wait_ms)
+    time_start = rospy.get_rostime()
     while abs(yaw - telemetry.yaw) > tolerance:
-        time += wait_ms
         telemetry = get_telemetry(frame_id=frame_id)
         print('Reaching angle | Telemetry | yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
-        rospy.sleep(wait_ms / 1000)
+
+        time = (rospy.get_rostime()-time_start).to_sec() * 1000
         if timeout != 0 and (time >= timeout):
             print('Reaching angle | Timed out! | t: ', time, sep='')
             return False
+        rate.sleep()
     return True
 
 
@@ -166,8 +173,22 @@ def circle(x_point, y_point, z_point, r, speed=0.25, angle_init=0.0, angle_max=m
     print("Ended moving in circle")
 
 
-def flip(flip_roll=True, flip_pith=False, invert_roll=False, invert_pitch=True):
+def flip(flip_roll=True, flip_pitch=False, invert_roll=False, invert_pitch=True, thrust=0.2):  # TODO
+    capture_position()
     telemetry = get_telemetry(frame_id=frame_id)
+
+    roll_rate = (5 * math.pi) * flip_roll
+    pitch_rate = (5 * math.pi) * flip_pitch
+
+    roll_rate = roll_rate*(-1) if invert_roll else roll_rate
+    pitch_rate = pitch_rate * (-1) if invert_pitch else pitch_rate
+
+    set_rates(roll_rate=roll_rate, pitch_rate=pitch_rate,  thrust=thrust)
+
+    while abs(telemetry.roll) < math.pi / 2:  #TODO
+        telemetry = get_telemetry(frame_id=frame_id)
+
+    reach(x=x_current, y=y_current, z=z_current)
 
 
 def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=50,
@@ -177,30 +198,34 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
              auto_arm=True)
 
     telemetry = get_telemetry(frame_id=frame_id)
-    time = 0
+    rate = rospy.Rate(1.0 / wait_ms)
+    time_start = rospy.get_rostime()
     while not telemetry.armed:
         telemetry = get_telemetry(frame_id=frame_id)
-        rospy.sleep(wait_ms / 1000)
-        time += wait_ms
+
+        time = (rospy.get_rostime()-time_start).to_sec() * 1000
         if timeout_arm != 0 and (time >= timeout_arm):
             print("Not armed, timed out. Not ready to flight, exiting!")
             sys.exit()
+        rate.sleep()
 
     print("In air!")
     rospy.sleep((wait_ms * 2) / 1000)
     telemetry = get_telemetry(frame_id='aruco_map')
-    time = 0
+    rate = rospy.Rate(1.0 / wait_ms)
+    time_start = rospy.get_rostime()
     while z - tolerance > telemetry.z:
         telemetry = get_telemetry(frame_id='aruco_map')
         print('Taking off | Telemetry | z: ', '{:.3f}'.format(telemetry.z), sep='')
-        rospy.sleep(wait_ms / 1000)
-        time += wait_ms
+
+        time = (rospy.get_rostime()-time_start).to_sec() * 1000
         if timeout_fcu != 0 and (time >= timeout_fcu):
             print('Takeoff | Timed out! | t: ', time, sep='')
             break
+        rate.sleep()
 
     print("Reaching takeoff attitude!")
-    result = attitude(z, yaw=yaw, tolerance=tolerance, timeout=timeout)
+    result = attitude(z, yaw=yaw, speed=speed, tolerance=tolerance, timeout=timeout)
     if result:
         print("Takeoff attitude reached. Takeoff completed!")
         return True
@@ -224,16 +249,18 @@ def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=5000, preland=True):
         return False
 
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
-    time = 0
+    rate = rospy.Rate(1.0 / wait_ms)
+    time_start = rospy.get_rostime()
     while telemetry.armed:
         telemetry = get_telemetry(frame_id='aruco_map')
         print('Landing | Telemetry | z: ', '{:.3f}'.format(telemetry.z), ' armed: ', telemetry.armed, sep='')
-        rospy.sleep(wait_ms / 1000)
-        time += wait_ms
+
+        time = (rospy.get_rostime()-time_start).to_sec() * 1000
         if timeout_land != 0 and (time >= timeout_land):
             print("Not detected autoland, timed out. Disarming!")
             arming(False)
             return False
+        rate.sleep()
     print("Land completed!")
     return True
 
