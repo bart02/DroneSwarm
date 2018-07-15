@@ -19,7 +19,7 @@ try:
         data = str(sock.recv(1024))
         print(data)
         try:
-            sq = data.split('$$')  # разделение команд по стоп символу
+            sq = data.split('$$') 
             tem.telemetry_thread()
             for i in range(len(sq)-1):
                 n = eval(sq[i])
