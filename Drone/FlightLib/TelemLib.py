@@ -5,6 +5,7 @@ import rospy
 from clever import srv
 import socket
 
+
 def init(node_name="TelemLib"):
     print("Initing telemetry node")
     rospy.init_node(node_name)
