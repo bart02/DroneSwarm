@@ -10,7 +10,12 @@ led.rainbow()
 f.reach(0.5, 0.5, 1)
 led.run(255, 0, 0, 10)
 f.spin(yaw_rate=0.5)
+led.wipe_to(255, 255, 0)
+f.rotate_to(0)
+f.reach(1, 1, 1)
 led.chase(0, 255, 0)
 f.land()
 led.off()
 time.sleep(3)
+
+
