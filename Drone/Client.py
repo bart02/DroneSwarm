@@ -2,7 +2,7 @@ from FlightLib import FlightLib as f
 f.init('server')
 
 from FlightLib import TelemLib as tem
-tem.init('server')
+tem.init()
 
 from FlightLib import LedLib as led
 

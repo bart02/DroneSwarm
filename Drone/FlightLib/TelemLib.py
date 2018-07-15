@@ -5,6 +5,7 @@ import rospy
 from clever import srv
 import socket
 
+
 def init(node_name="TelemLib"):
     print("Initing telemetry node")
     rospy.init_node(node_name)
@@ -17,7 +18,6 @@ wait_ms = 100
 
 
 def telemetry_thread():
-
     data = b''
     sock = socket.socket()
     sock.connect(('192.168.1.6', 35002))
@@ -27,9 +27,9 @@ def telemetry_thread():
         y = bytes(str(round(telemetry.y, 3)), 'utf-8')
         z = bytes(str(round(telemetry.z, 3)), 'utf-8')
         data = x + b',' + y + b',' + z
-        sock.send(data) 
-       
-        time.sleep(wait_ms/1000)
+        sock.send(data)
+
+        time.sleep(wait_ms / 1000)
 
 
 t_t = Thread(target=telemetry_thread)
