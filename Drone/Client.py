@@ -20,7 +20,6 @@ try:
         print(data)
         try:
             sq = data.split('$$')
-            tem.telemetry_thread()
             for i in range(len(sq)-1):
                 n = eval(sq[i])
                 sock.send(bytes(sq[i]+str(n), 'utf-8'))
