@@ -73,7 +73,7 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, fra
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
-    rate = rospy.Rate(1.0 / wait_ms)
+    rate = rospy.Rate(1000 / wait_ms)
     time_start = rospy.get_rostime()
     while get_distance(x, y, z, telemetry.x, telemetry.y, telemetry.z) > tolerance:
         telemetry = get_telemetry(frame_id=frame_id)
@@ -97,7 +97,7 @@ def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
-    rate = rospy.Rate(1.0 / wait_ms)
+    rate = rospy.Rate(1000 / wait_ms)
     time_start = rospy.get_rostime()
     while abs(z - telemetry.z) > tolerance:
         telemetry = get_telemetry(frame_id=frame_id)
@@ -120,7 +120,7 @@ def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map',
 
     # waiting for completion
     telemetry = get_telemetry(frame_id=frame_id)
-    rate = rospy.Rate(1.0 / wait_ms)
+    rate = rospy.Rate(1000 / wait_ms)
     time_start = rospy.get_rostime()
     while abs(yaw - telemetry.yaw) > tolerance:
         telemetry = get_telemetry(frame_id=frame_id)
@@ -147,7 +147,7 @@ def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
 
 def circle(x_point, y_point, z_point, r, speed=0.25, angle_init=0.0, angle_max=math.pi * 2, yaw=float('nan'),
            yaw_rate=0.0, frame_id='aruco_map', wait_ms=100):
-    rate = rospy.Rate(1.0 / wait_ms)
+    rate = rospy.Rate(1000 / wait_ms)
     delta = (wait_ms / 1000) * speed
     angle = angle_init
 
@@ -198,7 +198,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
              auto_arm=True)
 
     telemetry = get_telemetry(frame_id=frame_id)
-    rate = rospy.Rate(1.0 / wait_ms)
+    rate = rospy.Rate(1000 / wait_ms)
     time_start = rospy.get_rostime()
     while not telemetry.armed:
         telemetry = get_telemetry(frame_id=frame_id)
@@ -210,9 +210,9 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
         rate.sleep()
 
     print("In air!")
-    rospy.sleep((wait_ms * 2) / 1000)
+    rospy.sleep(wait_ms / 1000)
     telemetry = get_telemetry(frame_id='aruco_map')
-    rate = rospy.Rate(1.0 / wait_ms)
+    rate = rospy.Rate(1000 / wait_ms)
     time_start = rospy.get_rostime()
     while z - tolerance > telemetry.z:
         telemetry = get_telemetry(frame_id='aruco_map')
@@ -249,7 +249,7 @@ def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=5000, preland=True):
         return False
 
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
-    rate = rospy.Rate(1.0 / wait_ms)
+    rate = rospy.Rate(1000 / wait_ms)
     time_start = rospy.get_rostime()
     while telemetry.armed:
         telemetry = get_telemetry(frame_id='aruco_map')
