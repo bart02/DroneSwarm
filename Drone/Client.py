@@ -1,7 +1,6 @@
 from FlightLib import FlightLib as f
 f.init('server')
 
-from FlightLib import TelemLib as tem
 
 
 from FlightLib import LedLib as led
