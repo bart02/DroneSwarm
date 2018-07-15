@@ -145,7 +145,7 @@ def spin(yaw_rate=0.2, speed=1.0, frame_id='aruco_map', timeout=5000):
     return True
 
 
-def circle(x_point, y_point, z_point, r, speed=0.25, angle_init=0.0, angle_max=math.pi * 2, yaw=float('nan'),
+def circle(x_point, y_point, z_point, r, speed=0.5, angle_init=0.0, angle_max=math.pi * 2, yaw=float('nan'),
            yaw_rate=0.0, frame_id='aruco_map', wait_ms=100):
     rate = rospy.Rate(1000 / wait_ms)
     delta = (wait_ms / 1000) * speed
@@ -165,6 +165,7 @@ def circle(x_point, y_point, z_point, r, speed=0.25, angle_init=0.0, angle_max=m
         angle += delta
 
         telemetry = get_telemetry(frame_id=frame_id)
+        print('Moving in circle | Start point | angle: ', '{:.3f}'.format(angle), sep='')
         print('Moving in circle | Telemetry | x: ', '{:.3f}'.format(telemetry.x), ' y: ',
               '{:.3f}'.format(telemetry.y), ' z: ', '{:.3f}'.format(telemetry.z), ' yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
 
