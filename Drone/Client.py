@@ -1,8 +1,7 @@
 from FlightLib import FlightLib as f
 f.init('server')
 
-from FlightLib import TelemLib as tem
-tem.init('server')
+
 
 from FlightLib import LedLib as led
 
@@ -19,8 +18,7 @@ try:
         data = str(sock.recv(1024))
         print(data)
         try:
-            sq = data.split('$$')  # разделение команд по стоп символу
-            tem.telemetry_thread()
+            sq = data.split('$$')
             for i in range(len(sq)-1):
                 n = eval(sq[i])
                 sock.send(bytes(sq[i]+str(n), 'utf-8'))
