@@ -1,0 +1,75 @@
+<DroneSwarm>
+    <time t="5">
+        <swarm>
+            <takeoff z="1" />
+            <led mode="fill" r="0" g="0" b="255" />
+        </swarm> 
+    </time>
+    <time t="10">
+        <copter n="1">
+            <attitude z="0.5" />
+            <led mode="fill" r="255" g="0" b="0" />
+        </copter>
+    </time>
+    <time t="20">
+	    <copter n="2">
+            <attitude z="0.5" />
+            <led mode="fade" r="255" g="0" b="0" />
+        </copter>
+    </time>
+    <time t="30">
+        <copter n="1">
+            <reach x="0" y="0"  z="2" />
+            <led mode="fade" r="0" g="0" b="255" />
+        </copter>
+    </time>
+    <time t="40">
+        <copter n="2">
+            <reach x="0" y="2.8"  z="2" />
+            <led mode="fade" r="255" g="0" b="255" />
+        </copter>
+    </time>
+    <time t="45">
+        <copter n="1">
+            <reach x="1.3" y="0"  z="1" />
+            <led mode="fade" r="255" g="0" b="255" />
+        </copter>
+    </time>
+    <time t="50">
+        <copter n="2">
+            <reach x="0" y="0"  z="1" />
+            <led mode="fade" r="255" g="0" b="255" />
+        </copter>
+    </time>
+
+    <time t="55">
+        <copter n="1">
+            <reach x="1.3" y="2.8"  z="2" />
+            <led mode="rainbow" />
+        </copter>
+    </time>
+    <time t="60">
+        <copter n="2">
+            <reach x="1.3" y="0"  z="2" />
+            <led mode="rainbow" />
+        </copter>
+    </time>
+    <time t="65">
+        <copter n="1">
+            <reach x="0" y="2.8"  z="1" />
+            <led mode="blink" r="255" g="0" b="0" />
+        </copter>
+    </time>
+    <time t="70">
+        <copter n="2">
+            <reach x="1.3" y="2.8"  z="1" />
+            <led mode="blink" r="0" g="0" b="255" />
+        </copter>
+    </time>
+    <time t="75">
+        <copter n="1">
+            <reach x="0" y="0"  z="2" />
+            <led mode="fill" r="255" g="0" b="0" />
+        </copter>
+    </time>
+</DroneSwarm>
