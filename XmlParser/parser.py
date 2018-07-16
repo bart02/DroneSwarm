@@ -1,4 +1,5 @@
 import xmltodict
+# from pprint import pprint
 
 types = {
     'x': float,
@@ -15,7 +16,10 @@ types = {
     'z_coefficient': float,
     'timeout_arm': int,
     'timeout_land': int,
-    'preland': bool
+    'preland': bool,
+    'r': int,
+    'g': int,
+    'b': int,
 }
 
 
@@ -35,17 +39,39 @@ def parse_xml(xml_file=None, xml_str=None):
     for t in xmldict:
         time = float(t['@t'])
         ready[time] = {}
-        if type(t['copter']) != list:
-            t['copter'] = [t['copter']]
-        for copter in t['copter']:
-            copternum = int(copter['@n'])
+        try:
+            if type(t['copter']) != list:
+                t['copter'] = [t['copter']]
+            for copter in t['copter']:
+                copternum = int(copter['@n'])
+                ready[time][copternum] = []
+                copter.pop('@n')
+                for action in copter:
+                    actiondict = {}
+                    try:
+                        for prm in dict(copter[action]):
+                            val = dict(copter[action])[prm]
+                            prm = str(prm.replace('@', ''))
+                            try:
+                                actiondict[prm] = types[prm](val)
+                            except KeyError:
+                                print "Types hasn't got " + prm + ', use str.'
+                                actiondict[prm] = str(val)
+                        # print {action: actiondict}
+                        ready[time][copternum].append({str(action): actiondict})
+                    except ValueError:
+                        raise ValueError('You can use only "n" parameter in "copter" tag')
+        except KeyError:
+            pass
+        try:
+            swarm = t['swarm']
+            copternum = 0
             ready[time][copternum] = []
-            copter.pop('@n')
-            for action in copter:
+            for action in swarm:
                 actiondict = {}
                 try:
-                    for prm in dict(copter[action]):
-                        val = dict(copter[action])[prm]
+                    for prm in dict(swarm[action]):
+                        val = dict(swarm[action])[prm]
                         prm = str(prm.replace('@', ''))
                         try:
                             actiondict[prm] = types[prm](val)
@@ -54,25 +80,11 @@ def parse_xml(xml_file=None, xml_str=None):
                             actiondict[prm] = str(val)
                     # print {action: actiondict}
                     ready[time][copternum].append({str(action): actiondict})
-                except ValueError:
-                    raise ValueError('You can use only "n" parameter in "copter" tag')
-
-        swarm = t['swarm']
-        copternum = 0
-        ready[time][copternum] = []
-        for action in swarm:
-            actiondict = {}
-            try:
-                for prm in dict(swarm[action]):
-                    val = dict(swarm[action])[prm]
-                    prm = str(prm.replace('@', ''))
-                    try:
-                        actiondict[prm] = types[prm](val)
-                    except KeyError:
-                        print "Types hasn't got " + prm + ', use str.'
-                        actiondict[prm] = str(val)
-                # print {action: actiondict}
-                ready[time][copternum].append({str(action): actiondict})
-            except TypeError:
-                raise ValueError('You can use only one "swarm" tag')
+                except TypeError:
+                    raise ValueError('You can use only one "swarm" tag')
+        except KeyError:
+            pass
     return ready
+
+
+# pprint(parse_xml(xml_file='roy.xml'))
