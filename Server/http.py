@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from json import dumps as json
 from mwt import MWT
