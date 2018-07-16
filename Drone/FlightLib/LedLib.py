@@ -25,6 +25,7 @@ r_prev = 0
 g_prev = 0
 b_prev = 0
 
+direct = False
 l = 0
 wait_ms = 10
 
@@ -42,9 +43,10 @@ def math_wheel(pos):
         return Color(0, pos * 3, 255 - pos * 3)
 
 
-def rainbow(wait=10):
-    global wait_ms, mode
+def rainbow(wait=10, direction=False):
+    global wait_ms, direct, mode
     wait_ms = wait
+    direct = direction
     mode = "rainbow"
 
 
@@ -65,21 +67,23 @@ def blink(red, green, blue, wait=250):
     mode = "blink"
 
 
-def chase(red, green, blue, wait=50):
-    global r, g, b, wait_ms, mode
+def chase(red, green, blue, wait=50, direction=False):
+    global r, g, b, wait_ms, direct, mode
     r = red
     g = green
     b = blue
     wait_ms = wait
+    direct = direction
     mode = "chase"
 
 
-def wipe_to(red, green, blue, wait=50):
-    global r, g, b, wait_ms, mode
+def wipe_to(red, green, blue, wait=50, direction=False):
+    global r, g, b, wait_ms, direct, mode
     r = red
     g = green
     b = blue
     wait_ms = wait
+    direct = direction
     mode = "wipe_to"
 
 
@@ -95,12 +99,13 @@ def fade_to(red, green, blue, wait=20):  # do not working with rainbow (solid co
     mode = "fade_to"
 
 
-def run(red, green, blue, length=strip.numPixels(), wait=25):
-    global r, g, b, l, wait_ms, mode
+def run(red, green, blue, length=strip.numPixels(), direction=False, wait=25):
+    global r, g, b, l, wait_ms, direct, mode
     r = red
     g = green
     b = blue
     l = length
+    direct = direction
     wait_ms = wait
     mode = "run"
 
@@ -116,25 +121,29 @@ def strip_set(color):
     strip.show()
 
 
-def strip_rainbow_frame(iteration):
+def strip_rainbow_frame(iteration, direction):
     for i in range(strip.numPixels()):
-        strip.setPixelColor(i, math_wheel((int(i * 256 / strip.numPixels()) + iteration) & 255))
+        n = ((strip.numPixels()-1)*direction) - i
+        strip.setPixelColor(abs(n), math_wheel((int(i * 256 / strip.numPixels()) + iteration) & 255))
     strip.show()
 
 
-def strip_chase_step(color):
+def strip_chase_step(color, direction):
     for q in range(3):
         for i in range(0, strip.numPixels(), 3):
-            strip.setPixelColor(i + q, color)
+            n = ((strip.numPixels() - 1) * direction) - (i + q)
+            strip.setPixelColor(abs(n), color)
         strip.show()
         time.sleep(wait_ms / 1000.0)
         for i in range(0, strip.numPixels(), 3):
-            strip.setPixelColor(i + q, 0)
+            n = ((strip.numPixels() - 1) * direction) - (i + q)
+            strip.setPixelColor(abs(n), 0)
 
 
-def strip_wipe(color):
+def strip_wipe(color, direction):
     for i in range(strip.numPixels()):
-        strip.setPixelColor(i, color)
+        n = ((strip.numPixels() - 1) * direction) - i
+        strip.setPixelColor(abs(n), color)
         time.sleep(wait_ms / 1000.0)
         strip.show()
 
@@ -152,16 +161,16 @@ def strip_fade(r1, g1, b1, r2, g2, b2, frames=51):
     strip_set(Color(r2, g2, b2))
 
 
-def strip_run_step(red, green, blue, length, iteration):
+def strip_run_step(red, green, blue, length, direction, iteration):
     r_delta = red // length
     g_delta = green // length
     b_delta = blue // length
     for i in range(strip.numPixels()):
-        n = (i+iteration) % strip.numPixels()
+        n = ((strip.numPixels()-1)*direction)-((i+iteration) % strip.numPixels())
         r_fin = max(0, (red - (r_delta * i)))
         g_fin = max(0, (green - (g_delta * i)))
         b_fin = max(0, (blue - (b_delta * i)))
-        strip.setPixelColor(n, Color(r_fin, g_fin, b_fin))
+        strip.setPixelColor(abs(n), Color(r_fin, g_fin, b_fin))
     strip.show()
 
 
@@ -179,7 +188,7 @@ def led_thread():
         if mode == "rainbow":
             if iteration >= 256:
                 iteration = 0
-            strip_rainbow_frame(iteration)
+            strip_rainbow_frame(iteration, direct)
             time.sleep(wait_ms / 1000.0)
             iteration += 1
         elif mode == "fill":
@@ -192,15 +201,15 @@ def led_thread():
             strip_set(Color(0, 0, 0))
             time.sleep(wait_ms / 1000.0)
         elif mode == "chase":
-            strip_chase_step(Color(r, g, b))
+            strip_chase_step(Color(r, g, b), direct)
         elif mode == "wipe_to":
-            strip_wipe(Color(r, g, b))
+            strip_wipe(Color(r, g, b, direct))
             mode = ""
         elif mode == "fade_to":
             strip_fade(r_prev, g_prev, b_prev, r, g, b)
             mode = ""
         elif mode == "run":
-            strip_run_step(r, g, b, l, iteration)
+            strip_run_step(r, g, b, l, direct, iteration)
             time.sleep(wait_ms / 1000.0)
             iteration += 1
         elif mode == "off":
