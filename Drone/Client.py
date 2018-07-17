@@ -4,6 +4,7 @@ f.init('server')
 from FlightLib import LedLib as led
 from time import sleep
 import socket
+import sys
 
 
 n = True
