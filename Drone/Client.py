@@ -2,13 +2,20 @@ from FlightLib import FlightLib as f
 f.init('server')
 # from FlightLib import TelemLib
 from FlightLib import LedLib as led
+from time import sleep
+import socket
+
 
 n = True
 
-import socket
-
-sock = socket.socket()
-sock.connect(('192.168.1.6', 35001))
+while True:
+    try:
+        sock = socket.socket()
+        sock.connect(('192.168.1.6', 35001))
+    except socket.error:
+        sleep(10)
+    else:
+        break
 sq = []
 
 try:
