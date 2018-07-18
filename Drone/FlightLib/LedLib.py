@@ -193,7 +193,6 @@ def led_thread():
             iteration += 1
         elif mode == "fill":
             strip_set(Color(r, g, b))
-            time.sleep(wait_ms / 1000.0)
             mode = ""
         elif mode == "blink":
             strip_set(Color(r, g, b))
@@ -204,7 +203,7 @@ def led_thread():
             strip_chase_step(Color(r, g, b), direct)
         elif mode == "wipe_to":
             strip_wipe(Color(r, g, b,), direct)
-            mode = ""
+            mode = "fill"
         elif mode == "fade_to":
             strip_fade(r_prev, g_prev, b_prev, r, g, b)
             mode = ""
