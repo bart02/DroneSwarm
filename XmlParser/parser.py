@@ -80,7 +80,7 @@ def parse_xml(xml_file=None, xml_str=None):
                                 print "Types hasn't got " + prm + ', use str.'
                                 actiondict[prm] = str(val)
                         # print {action: actiondict}
-                        ready[time][copternum].append({str(action): actiondict})
+                    ready[time][copternum].append({str(action): actiondict})
                 except TypeError:
                     raise ValueError('You can use only one "swarm" tag')
         except KeyError:
