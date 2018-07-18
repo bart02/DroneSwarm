@@ -23,11 +23,11 @@ sq = []
 try:
     while True:
         data = str(sock.recv(1024))
-        print(data)
         try:
             sq = data.split('$$')
             for i in range(len(sq)-1):
                 n = eval(sq[i])
+                print sq[i]
                 sock.send(bytes(sq[i]+str(n)))
 
         except Exception as e:
