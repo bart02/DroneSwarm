@@ -70,15 +70,16 @@ def parse_xml(xml_file=None, xml_str=None):
             for action in swarm:
                 actiondict = {}
                 try:
-                    for prm in dict(swarm[action]):
-                        val = dict(swarm[action])[prm]
-                        prm = str(prm.replace('@', ''))
-                        try:
-                            actiondict[prm] = types[prm](val)
-                        except KeyError:
-                            print "Types hasn't got " + prm + ', use str.'
-                            actiondict[prm] = str(val)
-                    # print {action: actiondict}
+                    if swarm[action] is not None:
+                        for prm in dict(swarm[action]):
+                            val = dict(swarm[action])[prm]
+                            prm = str(prm.replace('@', ''))
+                            try:
+                                actiondict[prm] = types[prm](val)
+                            except KeyError:
+                                print "Types hasn't got " + prm + ', use str.'
+                                actiondict[prm] = str(val)
+                        # print {action: actiondict}
                     ready[time][copternum].append({str(action): actiondict})
                 except TypeError:
                     raise ValueError('You can use only one "swarm" tag')
@@ -87,4 +88,4 @@ def parse_xml(xml_file=None, xml_str=None):
     return ready
 
 
-# pprint(parse_xml(xml_file='roy.xml'))
+# pprint(parse_xml(xml_file='alex.xml'))
