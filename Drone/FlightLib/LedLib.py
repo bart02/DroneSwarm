@@ -203,7 +203,7 @@ def led_thread():
         elif mode == "chase":
             strip_chase_step(Color(r, g, b), direct)
         elif mode == "wipe_to":
-            strip_wipe(Color(r, g, b, direct))
+            strip_wipe(Color(r, g, b,), direct)
             mode = ""
         elif mode == "fade_to":
             strip_fade(r_prev, g_prev, b_prev, r, g, b)
