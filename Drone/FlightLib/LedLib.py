@@ -214,6 +214,7 @@ def led_thread():
         elif mode == "off":
             strip_off()
             mode = ""
+        time.sleep(1 / 1000)
 
 
 # init
