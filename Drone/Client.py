@@ -26,8 +26,8 @@ try:
         try:
             sq = data.split('$$')
             for i in range(len(sq)-1):
-                n = eval(sq[i])
                 print sq[i]
+                n = eval(sq[i])
                 sock.send(bytes(sq[i]+str(n)))
 
         except Exception as e:
