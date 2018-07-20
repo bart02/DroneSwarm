@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- .
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -6,9 +7,7 @@ import matplotlib.pyplot as plt
 import time
 import socket
 import os
-import time
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5 import QtCore
 import easygui
 import threading
 from threading import Thread
@@ -81,6 +80,7 @@ def qInitResources():
 
 def qCleanupResources():
     QtCore.qUnregisterResourceData(rcc_version, qt_resource_struct, qt_resource_name, qt_resource_data)
+
 
 qInitResources()
 
@@ -310,7 +310,7 @@ class Ui_MainWindow(object):
         self.turn_on_led_button.setText(_translate("MainWindow", "Turn on Leds"))
         self.turn_off_led_button.setText(_translate("MainWindow", "Turn off Leds"))
         self.number_animation_copters.setText(_translate("MainWindow", "Number anim"))
-        #self.telemetry_but.setText(_translate("MainWindow", "Telemetry"))
+        # self.telemetry_but.setText(_translate("MainWindow", "Telemetry"))
         self.stop_swarm_but.setText(_translate("MainWindow", "Stop swarm"))
         self.connect_button.setText(_translate("MainWindow", "Connect"))
         self.square_button.setText(_translate("MainWindow", "Square"))
@@ -346,16 +346,8 @@ class Ui_MainWindow(object):
         self.tilt_square_lineEdit.setText(_translate("MainWindow", "x,y"))
         self.tilt_circle_lineEdit.setText(_translate("MainWindow", "x,y"))
 
-
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'telemetry.ui'
-#
-# Created by: PyQt5 UI code generator 5.10.1
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -390,102 +382,102 @@ class Ui_Dialog(object):
         self.z_1.setObjectName("z_1")
         self.z_2 = QtWidgets.QLabel(Dialog)
         self.z_2.setGeometry(QtCore.QRect(40, 200, 51, 16))
-        self.z_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.z_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.z_2.setObjectName("z_2")
         self.x_2 = QtWidgets.QLabel(Dialog)
         self.x_2.setGeometry(QtCore.QRect(40, 100, 51, 16))
-        self.x_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.x_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.x_2.setObjectName("x_2")
         self.y_2 = QtWidgets.QLabel(Dialog)
         self.y_2.setGeometry(QtCore.QRect(40, 150, 51, 16))
-        self.y_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.y_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.y_2.setObjectName("y_2")
         self.mode_2 = QtWidgets.QLabel(Dialog)
         self.mode_2.setGeometry(QtCore.QRect(470, 130, 71, 16))
-        self.mode_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.mode_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.mode_2.setObjectName("mode_2")
         self.armed_2 = QtWidgets.QLabel(Dialog)
         self.armed_2.setGeometry(QtCore.QRect(470, 100, 71, 16))
-        self.armed_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.armed_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.armed_2.setObjectName("armed_2")
         self.frame_id_1 = QtWidgets.QLabel(Dialog)
         self.frame_id_1.setGeometry(QtCore.QRect(400, 170, 61, 16))
-        self.frame_id_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.frame_id_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.frame_id_1.setObjectName("frame_id_1")
         self.armed_1 = QtWidgets.QLabel(Dialog)
         self.armed_1.setGeometry(QtCore.QRect(400, 100, 51, 16))
-        self.armed_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.armed_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.armed_1.setObjectName("armed_1")
         self.frame_id_2 = QtWidgets.QLabel(Dialog)
         self.frame_id_2.setGeometry(QtCore.QRect(470, 170, 71, 16))
-        self.frame_id_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.frame_id_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.frame_id_2.setObjectName("frame_id_2")
         self.mode_1 = QtWidgets.QLabel(Dialog)
         self.mode_1.setGeometry(QtCore.QRect(400, 130, 51, 16))
-        self.mode_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.mode_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.mode_1.setObjectName("mode_1")
         self.voltage_2 = QtWidgets.QLabel(Dialog)
         self.voltage_2.setGeometry(QtCore.QRect(470, 200, 71, 16))
-        self.voltage_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.voltage_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.voltage_2.setObjectName("voltage_2")
         self.voltage_1 = QtWidgets.QLabel(Dialog)
         self.voltage_1.setGeometry(QtCore.QRect(400, 200, 51, 16))
-        self.voltage_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.voltage_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.voltage_1.setObjectName("voltage_1")
         self.roll_2 = QtWidgets.QLabel(Dialog)
         self.roll_2.setGeometry(QtCore.QRect(190, 200, 61, 16))
-        self.roll_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.roll_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.roll_2.setObjectName("roll_2")
         self.yaw_1 = QtWidgets.QLabel(Dialog)
         self.yaw_1.setGeometry(QtCore.QRect(140, 100, 31, 16))
-        self.yaw_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.yaw_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.yaw_1.setObjectName("yaw_1")
         self.pitch_1 = QtWidgets.QLabel(Dialog)
         self.pitch_1.setGeometry(QtCore.QRect(140, 150, 41, 16))
-        self.pitch_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.pitch_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.pitch_1.setObjectName("pitch_1")
         self.roll_1 = QtWidgets.QLabel(Dialog)
         self.roll_1.setGeometry(QtCore.QRect(140, 200, 31, 16))
-        self.roll_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.roll_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.roll_1.setObjectName("roll_1")
         self.pitch_2 = QtWidgets.QLabel(Dialog)
         self.pitch_2.setGeometry(QtCore.QRect(190, 150, 61, 16))
-        self.pitch_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.pitch_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.pitch_2.setObjectName("pitch_2")
         self.yaw2 = QtWidgets.QLabel(Dialog)
         self.yaw2.setGeometry(QtCore.QRect(190, 100, 61, 16))
-        self.yaw2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.yaw2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.yaw2.setObjectName("yaw2")
         self.vy_1 = QtWidgets.QLabel(Dialog)
         self.vy_1.setGeometry(QtCore.QRect(270, 150, 31, 16))
-        self.vy_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.vy_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.vy_1.setObjectName("vy_1")
         self.vx_2 = QtWidgets.QLabel(Dialog)
         self.vx_2.setGeometry(QtCore.QRect(320, 100, 61, 16))
-        self.vx_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.vx_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.vx_2.setObjectName("vx_2")
         self.vz_1 = QtWidgets.QLabel(Dialog)
         self.vz_1.setGeometry(QtCore.QRect(270, 200, 31, 16))
-        self.vz_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.vz_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.vz_1.setObjectName("vz_1")
         self.vy_2 = QtWidgets.QLabel(Dialog)
         self.vy_2.setGeometry(QtCore.QRect(320, 150, 61, 16))
-        self.vy_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.vy_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.vy_2.setObjectName("vy_2")
         self.vz_2 = QtWidgets.QLabel(Dialog)
         self.vz_2.setGeometry(QtCore.QRect(320, 200, 61, 16))
-        self.vz_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.vz_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.vz_2.setObjectName("vz_2")
         self.vx_1 = QtWidgets.QLabel(Dialog)
         self.vx_1.setGeometry(QtCore.QRect(270, 100, 31, 16))
-        self.vx_1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.vx_1.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.vx_1.setObjectName("vx_1")
         self.back = QtWidgets.QLabel(Dialog)
         self.back.setGeometry(QtCore.QRect(0, 0, 551, 241))
         self.back.setObjectName("back")
         self.back.raise_()
         self.copter_text.raise_()
-        #self.go_pushButton.raise_()
+        # self.go_pushButton.raise_()
         self.number_spinBox.raise_()
         self.x_1.raise_()
         self.y_1.raise_()
@@ -521,38 +513,63 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Telemetry"))
         self.copter_text.setText(_translate("Dialog", "Copter"))
-        #self.go_pushButton.setText(_translate("Dialog", "Go"))
-        self.x_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">x=</span></p></body></html>"))
-        self.y_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">y=</span></p></body></html>"))
-        self.z_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">z=</span></p></body></html>"))
-        self.z_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.x_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.y_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.mode_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">MANUALE</span></p></body></html>"))
-        self.armed_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">False</span></p></body></html>"))
-        self.frame_id_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">farme id=</span><br/></p></body></html>"))
-        self.armed_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">armed=</span></p></body></html>"))
-        self.frame_id_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">aruco_map</span></p></body></html>"))
-        self.mode_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">mode=</span></p></body></html>"))
-        self.voltage_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.voltage_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">voltage=</span></p></body></html>"))
-        self.roll_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.yaw_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">yaw=</span></p></body></html>"))
-        self.pitch_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">pitch=</span></p></body></html>"))
-        self.roll_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">roll=</span></p></body></html>"))
-        self.pitch_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.yaw2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.vy_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">vy=</span></p></body></html>"))
-        self.vx_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.vz_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">vz=</span></p></body></html>"))
-        self.vy_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.vz_2.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
-        self.vx_1.setText(_translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">vx=</span></p></body></html>"))
-        self.back.setText(_translate("Dialog", "<html><head/><body><p><img src=\":/telem/Без имени.png\"/></p></body></html>"))
+        self.x_1.setText(
+            _translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">x=</span></p></body></html>"))
+        self.y_1.setText(
+            _translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">y=</span></p></body></html>"))
+        self.z_1.setText(
+            _translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">z=</span></p></body></html>"))
+        self.z_2.setText(_translate("Dialog",
+                                    "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.x_2.setText(_translate("Dialog",
+                                    "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.y_2.setText(_translate("Dialog",
+                                    "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.mode_2.setText(_translate("Dialog",
+                                       "<html><head/><body><p><span style=\" color:#c8c8c8;\">MANUALE</span></p></body></html>"))
+        self.armed_2.setText(_translate("Dialog",
+                                        "<html><head/><body><p><span style=\" color:#c8c8c8;\">False</span></p></body></html>"))
+        self.frame_id_1.setText(_translate("Dialog",
+                                           "<html><head/><body><p><span style=\" color:#c8c8c8;\">farme id=</span><br/></p></body></html>"))
+        self.armed_1.setText(_translate("Dialog",
+                                        "<html><head/><body><p><span style=\" color:#c8c8c8;\">armed=</span></p></body></html>"))
+        self.frame_id_2.setText(_translate("Dialog",
+                                           "<html><head/><body><p><span style=\" color:#c8c8c8;\">aruco_map</span></p></body></html>"))
+        self.mode_1.setText(_translate("Dialog",
+                                       "<html><head/><body><p><span style=\" color:#c8c8c8;\">mode=</span></p></body></html>"))
+        self.voltage_2.setText(_translate("Dialog",
+                                          "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.voltage_1.setText(_translate("Dialog",
+                                          "<html><head/><body><p><span style=\" color:#c8c8c8;\">voltage=</span></p></body></html>"))
+        self.roll_2.setText(_translate("Dialog",
+                                       "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.yaw_1.setText(
+            _translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">yaw=</span></p></body></html>"))
+        self.pitch_1.setText(_translate("Dialog",
+                                        "<html><head/><body><p><span style=\" color:#c8c8c8;\">pitch=</span></p></body></html>"))
+        self.roll_1.setText(_translate("Dialog",
+                                       "<html><head/><body><p><span style=\" color:#c8c8c8;\">roll=</span></p></body></html>"))
+        self.pitch_2.setText(_translate("Dialog",
+                                        "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.yaw2.setText(_translate("Dialog",
+                                     "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.vy_1.setText(
+            _translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">vy=</span></p></body></html>"))
+        self.vx_2.setText(_translate("Dialog",
+                                     "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.vz_1.setText(
+            _translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">vz=</span></p></body></html>"))
+        self.vy_2.setText(_translate("Dialog",
+                                     "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.vz_2.setText(_translate("Dialog",
+                                     "<html><head/><body><p><span style=\" color:#c8c8c8;\">0.000</span></p></body></html>"))
+        self.vx_1.setText(
+            _translate("Dialog", "<html><head/><body><p><span style=\" color:#c8c8c8;\">vx=</span></p></body></html>"))
+        self.back.setText(
+            _translate("Dialog", "<html><head/><body><p><img src=\":/telem/Без имени.png\"/></p></body></html>"))
+
 
 import telem_rc
-
-
 
 ip = [1, 2]
 # slids = 0
@@ -595,16 +612,12 @@ class Dialog(QMainWindow, Ui_Dialog):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        # self.go_pushButton.clicked.connect(self.upgrad)
 
     def up(self):
         self.voltage_2.setText('1234567')
 
 
-
 class Widget(QMainWindow, Ui_MainWindow):
-
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -627,49 +640,21 @@ class Widget(QMainWindow, Ui_MainWindow):
         self.disarm_spinBox.valueChanged.connect(self.disarm_led)
         self.take_off_spinBox.valueChanged.connect(self.take_off_led)
         self.safty_button.clicked.connect(self.safty)
-        #self.telemetry_but.clicked.connect(self.telem)
         self.connect_button.clicked.connect(self.connect)
         self.swarm_size_spinBox.valueChanged.connect(self.number_copters)
-
 
     def stop_swarm(self):
         global coord
         n = 0
         for s in coord:
             n += 1
-            self.sender(b'reach(' + bytes(str(s[0]+','+s[1]+','+s[2]), 'utf-8') + ')', n)
-            print(b'reach(' + bytes(str(s[0]+','+s[1]+','+s[2]), 'utf-8') + ')', n)
-
-    """
-    def telem(self):
-        tem = Thread(target=self.telem_th)
-        tem.daemon = True
-        tem.start()
-
-    def telem_th(self):
-        global coords
-        w_1 = Dialog()
-        w_1.show()
-
-        while True:
-
-            time.sleep(1)"""
+            self.sender(b'reach(' + bytes(str(s[0] + ',' + s[1] + ',' + s[2]), 'utf-8') + ')', n)
+            print(b'reach(' + bytes(str(s[0] + ',' + s[1] + ',' + s[2]), 'utf-8') + ')', n)
 
     def receiver(self):
         global copters
-        #global data
+        # global data
         global addr
-        # global ip # для автопоиска коптеров
-        #global conn_2
-
-        # for k in range(copters):
-        #     print(k)
-        #     try:  # для автопоиска коптеров len(ip)
-        #         conn_2[k].setblocking(False)
-        #
-        #     except:
-        #         print('er')
-
         while True:
             try:
                 for k in range(copters):  # len(ip) # для автопоиска коптеров
@@ -677,11 +662,22 @@ class Widget(QMainWindow, Ui_MainWindow):
                     tem = json.loads(a.text)
 
                     coord[k] = str(tem['x']) + ',' + str(tem['y']) + ',' + str(tem['z']) + ',' + \
-                               str(tem['mode']) + ',' + str(tem['armed']) + ',' + str(tem['frame_id']) + str(tem['voltage']) + ',' + \
-                               str(tem['yaw']) + ',' + str(tem['pitch']) + ',' + str(tem['roll']) + ',' +\
+                               str(tem['mode']) + ',' + str(tem['armed']) + ',' + str(tem['frame_id']) + str(
+                        tem['voltage']) + ',' + \
+                               str(tem['yaw']) + ',' + str(tem['pitch']) + ',' + str(tem['roll']) + ',' + \
                                str(tem['vx']) + ',' + str(tem['vy']) + ',' + str(tem['vz'])
 
                     time.sleep(0.05)
+
+                    s = str(self.console_textEdit.toPlainText())
+                    if '>' in s:
+
+                        print(s[:-2], s[s.index('>') - 1])
+                        self.console_textEdit.setText('')
+                        if s[s.index('>') - 1] == '0':
+                            self.sender(s, 'all')
+                        else:
+                            self.sender(s, s[s.index('>') - 1])
 
             except Exception as e:
 
@@ -727,7 +723,7 @@ class Widget(QMainWindow, Ui_MainWindow):
             conn.append(0)
             addr.append(0)
             # print(addr[i])
-            #print(type(addr[i]))
+            # print(type(addr[i]))
 
             # conn_2.append(0)
             # addr_2.append(0)
@@ -855,8 +851,7 @@ class Widget(QMainWindow, Ui_MainWindow):
 
     def circle(self):
         self.message('circle')
-        # print(b'f.circle('+bytes(self.center_circle_lineEdit.text(), 'utf-8')+b','+bytes(
-        # self.radius_circle_DoubleSpinBox.text(), 'utf-8')+b')')
+
         self.sender(b'f.circle(' + bytes(self.center_circle_lineEdit.text(), 'utf-8') + b',' + bytes(
             str(int(self.radius_circle_DoubleSpinBox.text()) / 10), 'utf-8') + b')',
                     'all')  # ToDO made function for all copters not for 1
@@ -871,9 +866,9 @@ class Widget(QMainWindow, Ui_MainWindow):
         t_4.start()
 
     def start_animation_1(self):
-
+        os.system(r"start C:\Users\allex\Documents\DroneSwarm\music\file.mp3")
         # xml parcer
-
+        time.sleep(4.5)
 
         types = {
 
@@ -1026,7 +1021,7 @@ class Widget(QMainWindow, Ui_MainWindow):
 
                                         actiondict[prm] = str(val)
 
-                                # print {action: actiondict}
+                                        # print {action: actiondict}
 
                             ready[time][copternum].append({str(action): actiondict})
 
@@ -1042,16 +1037,21 @@ class Widget(QMainWindow, Ui_MainWindow):
 
         # pprint(parse_xml(xml_file='alex.xml'))
 
-        data=''
+        data = ''
         global file
         xm = parse_xml(file)
         print(xm)
         n = 0
         for i in xm:
 
-
             for k in xm[i]:
-            # k copter number
+                # k copter number
+                s = str(xm.keys())[str(xm.keys()).index('[') + 1:-2]
+                p = s.split(', ')
+                try:
+                    timeout = str(((float(p[n + 1]) - float(p[n])) * 1000) - 500)
+                except:
+                    print('end')
 
                 for l in xm[i][k]:
 
@@ -1068,25 +1068,34 @@ class Widget(QMainWindow, Ui_MainWindow):
                         z = str(l[f]['z'])
                         r = str(l[f]['r'])
 
-                        data = 'f.circle' + '(' + x + ',' + y + ',' + z + ',' + r + ')'
+                        data = 'f.circle' + '(' + x + ',' + y + ',' + z + ',' + r + ',' + 'timeout =' + timeout + ')'
 
                         print(data, k)
                         print('_______________________')
                         self.sender(bytes(data, 'utf-8'), str(k))
+                    if f == 'music':
+                        file = str(l[f]['file'])
+
+                        os.system(r"start" + file)
+                        time.sleep(3)
+
 
                     elif f == 'led':
 
                         mode = str(l[f]['mode'])
                         if mode == 'rainbow':
                             data = 'led.rainbow()'
+                        elif mode == 'off':
+                            data = 'led.off()'
 
 
                         else:
+                            print(n)
                             r = str(l[f]['r'])
                             g = str(l[f]['g'])
                             b = str(l[f]['b'])
 
-                            data = 'led.' + mode + '(' + g + ',' + b + ',' + r + ')'
+                            data = 'led.' + mode + '(' + g + ',' + r + ',' + b + ')'
 
                         self.sender(bytes(data, 'utf-8'), str(k))
                         print(bytes(data, 'utf-8'), str(k))
@@ -1096,32 +1105,32 @@ class Widget(QMainWindow, Ui_MainWindow):
                         y = str(l[f]['y'])
                         z = str(l[f]['z'])
                         try:
-                            speed = 'speed='+str(l[f]['speed'])
-                            data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ')'
+                            speed = 'speed=' + str(l[f]['speed'])
+                            data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ',' + 'timeout=' + timeout + ')'
                         except:
-                            speed = 'speed=0.75'
-                            data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ')'
-
+                            speed = 'speed=0.5'
+                            data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ',' + 'timeout=' + timeout + ')'
 
                         self.sender(bytes(data, 'utf-8'), str(k))
                         print(bytes(data, 'utf-8'), str(k))
                         print('_______________________')
                     elif f == 'takeoff':
                         z = str(l[f]['z'])
-                        data = 'f.takeoff(' + z + ')'
+                        data = 'f.takeoff(' + z + ',' + 'timeout_arm=1000' + ',' + 'timeout_fcu=' + str(
+                            (float(timeout) - 1000) // 2) + ',' + 'timeout=' + str((float(timeout) - 1000) // 2) + ')'
 
                         self.sender(bytes(data, 'utf-8'), str(k))
                         print(bytes(data, 'utf-8'), str(k))
                         print('_______________________')
                     elif f == 'land':
-                        data = 'f.land()'
+                        data = 'f.land(timeout=' + timeout + ')'
 
                         self.sender(bytes(data, 'utf-8'), str(k))
                         print(bytes(data, 'utf-8'), str(k))
                         print('_______________________')
                     elif f == 'attitude':
                         z = str(l[f]['z'])
-                        data = 'f.attitude(' + z + ')'
+                        data = 'f.attitude(' + z + ',' + 'timeout =' + timeout + ')'
 
                         self.sender(bytes(data, 'utf-8'), str(k))
                         print(bytes(data, 'utf-8'), str(k))
@@ -1147,12 +1156,16 @@ class Widget(QMainWindow, Ui_MainWindow):
         updateDialog = Dialog()
         updateDialog.show()
 
-
-
         while True:
             try:
-                i = updateDialog.number_spinBox.value()
 
+
+                i = updateDialog.number_spinBox.value()
+                # coord=['1,2,3,4,5,6,7,8,9,0,1,2,3','10,20,30,40,50,60,70,80,90,00,10,20,30','100,200,300,400,500,600,700,800,900,000,100,200,300','1000,2000,3000,4000,5000,6000,7000,8000,9000,0000,1000,2000,3000','1,2,3,4,5,6,7,8,9,0,1,2,3','1,2,3,4,5,6,7,8,9,0,1,2,3',]
+                if i > 0:
+                    i -= 1
+
+                print(i)
                 coord_drone = []
                 coord_drone = coord[i].split(',')
 
@@ -1179,16 +1192,13 @@ class Widget(QMainWindow, Ui_MainWindow):
                 updateDialog.vx_2.setText("<html><head/><body><p><span style=\" color:#c8c8c8;\">" + coord_drone[
                     10] + "</span></p></body></html>")
                 updateDialog.vy_2.setText("<html><head/><body><p><span style=\" color:#c8c8c8;\">" + coord_drone[
-                    i] + "</span></p></body></html>")
+                    11] + "</span></p></body></html>")
                 updateDialog.vz_2.setText("<html><head/><body><p><span style=\" color:#c8c8c8;\">" + coord_drone[
-                    i] + "</span></p></body></html>")
-            except:
-                print('many drones')
-
+                    12] + "</span></p></body></html>")
+            except Exception as e:
+                print(e)
 
             try:
-
-
 
                 n = 0
                 # set size of scene
@@ -1209,7 +1219,6 @@ class Widget(QMainWindow, Ui_MainWindow):
 
                 ax.clear()
                 try:
-
                     for i in coord:
                         co = (0, 0, 0)
                         n += 1
@@ -1223,15 +1232,8 @@ class Widget(QMainWindow, Ui_MainWindow):
 
                         ax.scatter(float(i.split(',')[0]), float(i.split(',')[1]), float(i.split(',')[2]), s=50, c=co,
                                    marker='.')
+                        ax.text(float(i.split(',')[0]), float(i.split(',')[1]), float(i.split(',')[2]), str(n), size=10, zorder=1, color=(0,0,0))
 
-                        # ax.plot([float(i.split(',')[0]), ], [float(i.split(',')[1]), ], [float(i.split(',')[2]), ],
-                        #         c=(1, 0, 0))  # red x axe
-                        # ax.plot([float(i.split(',')[0]), ], [float(i.split(',')[1]), ], [float(i.split(',')[2]), ],
-                        #         c=(0, 1, 0))  # green y axe
-                        # ax.plot([float(i.split(',')[0]), ], [float(i.split(',')[1]), ], [float(i.split(',')[2]), ],
-                        #         c=(0, 0, 1))  # blue z axe
-
-                        # self.message(str(n) + '______' + i)
                         print(str(n) + '______' + i)
 
                 except Exception as e:
@@ -1253,14 +1255,11 @@ class Widget(QMainWindow, Ui_MainWindow):
         plt.show()
 
 
-
 if __name__ == '__main__':
-
     app = QApplication([])
     w = Widget()
     w.show()
 
     app.exec()
-
 
 """Code by Alexandr Osherov 9B class phone-89251834732 email - allexandr2001@mail.ru"""
