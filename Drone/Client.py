@@ -12,7 +12,7 @@ n = True
 while True:
     try:
         sock = socket.socket()
-        sock.connect(('192.168.1.6', 35001))
+        sock.connect(('192.168.1.9', 35001))
     except socket.error:
         print "No connection. Sleep 10 secs."
         sleep(10)
