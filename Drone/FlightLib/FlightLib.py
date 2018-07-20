@@ -192,10 +192,10 @@ def flip(flip_roll=True, flip_pitch=False, invert_roll=False, invert_pitch=True,
     reach(x=x_current, y=y_current, z=z_current)
 
 
-def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=50,
+def takeoff(z=1, z_coefficient=0.95, speed_takeoff=1.0, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=25,
             timeout_arm=5000, timeout_fcu=3000, timeout=7500):
-    print("Taking off!")
-    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=0.5, update_frame=False,
+    print("Starting takeoff!")
+    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed_takeoff, update_frame=False,
              auto_arm=True)
 
     telemetry = get_telemetry(frame_id=frame_id)
@@ -203,7 +203,7 @@ def takeoff(z=1, z_coefficient=0.9, speed=1.0, yaw=float('nan'), frame_id='fcu_h
     time_start = rospy.get_rostime()
     while not telemetry.armed:
         telemetry = get_telemetry(frame_id=frame_id)
-
+        print("Arming...")
         time = (rospy.get_rostime()-time_start).to_sec() * 1000
         if timeout_arm != 0 and (time >= timeout_arm):
             print("Not armed, timed out. Not ready to flight, exiting!")
