@@ -80,7 +80,7 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, fra
         print('Reaching point | Telemetry | x: ', '{:.3f}'.format(telemetry.x), ' y: ', '{:.3f}'.format(telemetry.y),
               ' z: ', '{:.3f}'.format(telemetry.z), ' yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
 
-        time = (rospy.get_rostime()-time_start).to_sec() * 1000
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
         if timeout != 0 and (time >= timeout):
             print('Reaching point | Timed out! | t: ', time, sep='')
             return False
@@ -104,7 +104,7 @@ def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_
         print('Reaching attitude | Telemetry | z: ', '{:.3f}'.format(telemetry.z), ' yaw: ',
               '{:.3f}'.format(telemetry.yaw), sep='')
 
-        time = (rospy.get_rostime()-time_start).to_sec() * 1000
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
         if timeout != 0 and (time >= timeout):
             print('Reaching attitude | Timed out! | t: ', time, sep='')
             return False
@@ -126,7 +126,7 @@ def rotate_to(yaw, yaw_rate=0.0, tolerance=0.2, speed=1.0, frame_id='aruco_map',
         telemetry = get_telemetry(frame_id=frame_id)
         print('Reaching angle | Telemetry | yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
 
-        time = (rospy.get_rostime()-time_start).to_sec() * 1000
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
         if timeout != 0 and (time >= timeout):
             print('Reaching angle | Timed out! | t: ', time, sep='')
             return False
@@ -158,7 +158,7 @@ def circle(x_point, y_point, z_point, r, speed=0.5, angle_init=0.0, angle_max=ma
     reach(x, y, z_point, yaw=yaw, frame_id=frame_id)
 
     print('Moving in circle | Start point | x: ', '{:.3f}'.format(x_point), ' y: ',
-          '{:.3f}'.format(y_point), ' z: ', '{:.3f}'.format(z_point), ' speed: ', '{:.3f}'.format(speed),  sep='')
+          '{:.3f}'.format(y_point), ' z: ', '{:.3f}'.format(z_point), ' speed: ', '{:.3f}'.format(speed), sep='')
     while angle <= angle_max + angle_init:
         x = (math.sin(angle) * r) + x_point
         y = (math.cos(angle) * r) + y_point
@@ -167,7 +167,8 @@ def circle(x_point, y_point, z_point, r, speed=0.5, angle_init=0.0, angle_max=ma
         telemetry = get_telemetry(frame_id=frame_id)
         print('Moving in circle | Start point | angle: ', '{:.3f}'.format(angle), sep='')
         print('Moving in circle | Telemetry | x: ', '{:.3f}'.format(telemetry.x), ' y: ',
-              '{:.3f}'.format(telemetry.y), ' z: ', '{:.3f}'.format(telemetry.z), ' yaw: ', '{:.3f}'.format(telemetry.yaw), sep='')
+              '{:.3f}'.format(telemetry.y), ' z: ', '{:.3f}'.format(telemetry.z), ' yaw: ',
+              '{:.3f}'.format(telemetry.yaw), sep='')
 
         set_position(x=x, y=y, z=z_point, yaw=yaw, yaw_rate=yaw_rate, frame_id=frame_id)
         rate.sleep()
@@ -181,21 +182,23 @@ def flip(flip_roll=True, flip_pitch=False, invert_roll=False, invert_pitch=True,
     roll_rate = (5 * math.pi) * flip_roll
     pitch_rate = (5 * math.pi) * flip_pitch
 
-    roll_rate = roll_rate*(-1) if invert_roll else roll_rate
+    roll_rate = roll_rate * (-1) if invert_roll else roll_rate
     pitch_rate = pitch_rate * (-1) if invert_pitch else pitch_rate
 
-    set_rates(roll_rate=roll_rate, pitch_rate=pitch_rate,  thrust=thrust)
+    set_rates(roll_rate=roll_rate, pitch_rate=pitch_rate, thrust=thrust)
 
-    while abs(telemetry.roll) < math.pi / 2:  #TODO
+    while abs(telemetry.roll) < math.pi / 2:  # TODO
         telemetry = get_telemetry(frame_id=frame_id)
 
     reach(x=x_current, y=y_current, z=z_current)
 
 
-def takeoff(z=1, z_coefficient=0.95, speed_takeoff=1.0, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz', tolerance=0.25, wait_ms=25,
+def takeoff(z=1, z_coefficient=0.95, speed_takeoff=1.0, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz',
+            tolerance=0.25, wait_ms=25, delay_fcu=1000,
             timeout_arm=5000, timeout_fcu=3000, timeout=7500):
     print("Starting takeoff!")
-    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed_takeoff, update_frame=False,
+    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed_takeoff,
+             update_frame=False,
              auto_arm=True)
 
     telemetry = get_telemetry(frame_id=frame_id)
@@ -204,14 +207,14 @@ def takeoff(z=1, z_coefficient=0.95, speed_takeoff=1.0, speed=1.0, yaw=float('na
     while not telemetry.armed:
         telemetry = get_telemetry(frame_id=frame_id)
         print("Arming...")
-        time = (rospy.get_rostime()-time_start).to_sec() * 1000
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
         if timeout_arm != 0 and (time >= timeout_arm):
             print("Not armed, timed out. Not ready to flight, exiting!")
             sys.exit()
         rate.sleep()
 
     print("In air!")
-    rospy.sleep(wait_ms / 1000)
+    rospy.sleep(delay_fcu)
     telemetry = get_telemetry(frame_id='aruco_map')
     rate = rospy.Rate(1000 / wait_ms)
     time_start = rospy.get_rostime()
@@ -219,7 +222,7 @@ def takeoff(z=1, z_coefficient=0.95, speed_takeoff=1.0, speed=1.0, yaw=float('na
         telemetry = get_telemetry(frame_id='aruco_map')
         print('Taking off | Telemetry | z: ', '{:.3f}'.format(telemetry.z), sep='')
 
-        time = (rospy.get_rostime()-time_start).to_sec() * 1000
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
         if timeout_fcu != 0 and (time >= timeout_fcu):
             print('Takeoff | Timed out! | t: ', time, sep='')
             break
@@ -246,7 +249,7 @@ def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=5000, preland=True):
 
     telemetry = get_telemetry(frame_id='aruco_map')
     if telemetry.mode == "STABILIZED":
-        print ("Not in OFFBOARD mode, probably intercepted! | Not preforming autoland.")
+        print("Not in OFFBOARD mode, probably intercepted! | Not preforming autoland.")
         return False
 
     set_mode(base_mode=0, custom_mode='AUTO.LAND')
@@ -256,7 +259,7 @@ def land(z=0.75, wait_ms=100, timeout=10000, timeout_land=5000, preland=True):
         telemetry = get_telemetry(frame_id='aruco_map')
         print('Landing | Telemetry | z: ', '{:.3f}'.format(telemetry.z), ' armed: ', telemetry.armed, sep='')
 
-        time = (rospy.get_rostime()-time_start).to_sec() * 1000
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
         if timeout_land != 0 and (time >= timeout_land):
             print("Not detected autoland, timed out. Disarming!")
             arming(False)
