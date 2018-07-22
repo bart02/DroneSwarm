@@ -30,7 +30,7 @@ def takeoff(h=1.5):
     print ("___takeoff!___")
     navigate(z=h, speed=1, frame_id='fcu_horiz', update_frame=False, auto_arm=True)
     print ("___in air___")
-    rospy.sleep(5)
+    rospy.sleep(3.5)
     height_adjust(h)
 
 
