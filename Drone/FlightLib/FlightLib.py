@@ -193,13 +193,11 @@ def flip(flip_roll=True, flip_pitch=False, invert_roll=False, invert_pitch=True,
     reach(x=x_current, y=y_current, z=z_current)
 
 
-def takeoff(z=1, z_coefficient=0.95, speed_takeoff=1.0, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz',
+def takeoff(z=1, speed_takeoff=1.0, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz',
             tolerance=0.25, wait_ms=25, delay_fcu=1000,
-            timeout_arm=5000, timeout_fcu=3000, timeout=7500):
+            timeout_arm=1500, timeout_fcu=3000, timeout=7500):
     print("Starting takeoff!")
-    navigate(frame_id=frame_id, x=0, y=0, z=z * z_coefficient, yaw=float('nan'), speed=speed_takeoff,
-             update_frame=False,
-             auto_arm=True)
+    navigate(frame_id=frame_id, x=0, y=0, z=z, yaw=float('nan'), speed=speed_takeoff, update_frame=False, auto_arm=True)
 
     telemetry = get_telemetry(frame_id=frame_id)
     rate = rospy.Rate(1000 / wait_ms)
