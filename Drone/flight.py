@@ -1,6 +1,6 @@
 import time
 from FlightLib import FlightLib as f
-f.init('CleverSwarmFlight')
+f.init('SingleCleverFlight')
 from FlightLib import LedLib as led
 
 led.wipe_to(0, 255, 0)
@@ -8,19 +8,19 @@ led.wipe_to(0, 255, 0)
 f.takeoff(1.5)
 led.rainbow()
 
-f.reach(0.2, 0.2, 1)
+f.reach(0.25, 0.25, 1.2)
 led.fade_to(255, 0, 0)
 
-f.reach(1, 0.2, 1)
+f.reach(1.35, 0.25, 1.2)
 led.fade_to(0, 255, 0)
 
-f.reach(1, 1, 1)
+f.reach(1.35, 2.2, 1.2)
 led.fade_to(0, 0, 255)
 
-f.reach(0.2, 1, 1)
+f.reach(0.25, 2.2, 1.2)
 led.fade_to(255, 255, 0)
 
-f.reach(0.2, 0.2, 1)
+f.reach(0.25, 0.25, 1.2)
 
 
 led.chase(0, 255, 0)
