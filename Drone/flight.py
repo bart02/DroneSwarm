@@ -5,7 +5,7 @@ from FlightLib import LedLib as led
 
 led.wipe_to(0, 255, 0)
 
-f.takeoff()
+f.takeoff(1.5)
 led.rainbow()
 
 f.reach(0.2, 0.2, 1)
