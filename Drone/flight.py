@@ -3,16 +3,26 @@ from FlightLib import FlightLib as f
 f.init('CleverSwarmFlight')
 from FlightLib import LedLib as led
 
-led.fill(255, 255, 255)
-f.safety_check()
-f.takeoff(yaw=0)
+led.wipe_to(0, 255, 0)
+
+f.takeoff()
 led.rainbow()
-f.reach(0.5, 0.5, 1)
-led.run(255, 0, 0, 10)
-f.spin(yaw_rate=0.5)
-led.wipe_to(255, 255, 0)
-f.rotate_to(0)
+
+f.reach(0.2, 0.2, 1)
+led.fade_to(255, 0, 0)
+
+f.reach(1, 0.2, 1)
+led.fade_to(0, 255, 0)
+
 f.reach(1, 1, 1)
+led.fade_to(0, 0, 255)
+
+f.reach(0.2, 1, 1)
+led.fade_to(255, 255, 0)
+
+f.reach(0.2, 0.2, 1)
+
+
 led.chase(0, 255, 0)
 f.land()
 led.off()
