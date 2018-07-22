@@ -66,7 +66,7 @@ def capture_position(frame_id='aruco_map'):
 
 
 def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100,
-          timeout=7500):
+          timeout=7500, delay=False):
     navigate(frame_id=frame_id, x=x, y=y, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
     print('Reaching point | x: ', '{:.3f}'.format(x), ' y: ', '{:.3f}'.format(y), ' z: ', '{:.3f}'.format(z), ' yaw: ',
           '{:.3f}'.format(yaw), sep='')
@@ -75,6 +75,7 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, fra
     telemetry = get_telemetry(frame_id=frame_id)
     rate = rospy.Rate(1000 / wait_ms)
     time_start = rospy.get_rostime()
+    time = 0
     while get_distance(x, y, z, telemetry.x, telemetry.y, telemetry.z) > tolerance:
         telemetry = get_telemetry(frame_id=frame_id)
         print('Reaching point | Telemetry | x: ', '{:.3f}'.format(telemetry.x), ' y: ', '{:.3f}'.format(telemetry.y),
@@ -86,11 +87,19 @@ def reach(x, y, z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, fra
             return False
         rate.sleep()
     print("Point reached!")
+
+    while delay:
+        print("Waiting for timeout end")
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
+        if timeout != 0 and (time >= timeout):
+            print('Timeout ended', sep='')
+            break
+        rate.sleep()
     return True
 
 
 def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_id='aruco_map', wait_ms=100,
-             timeout=7500):
+             timeout=5000, delay=False):
     capture_position(frame_id=frame_id)
     navigate(frame_id=frame_id, x=x_current, y=y_current, z=z, yaw=yaw, yaw_rate=yaw_rate, speed=speed)
     print('Reaching attitude | z: ', '{:.3f}'.format(z), ' yaw: ', '{:.3f}'.format(yaw), sep='')
@@ -110,6 +119,14 @@ def attitude(z, yaw=float('nan'), yaw_rate=0.0, speed=1.0, tolerance=0.2, frame_
             return False
         rate.sleep()
     print("Attitude reached!")
+
+    while delay:
+        print("Waiting for timeout end")
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
+        if timeout != 0 and (time >= timeout):
+            print('Timeout ended', sep='')
+            break
+        rate.sleep()
     return True
 
 
@@ -194,7 +211,7 @@ def flip(flip_roll=True, flip_pitch=False, invert_roll=False, invert_pitch=True,
 
 
 def takeoff(z=1, speed_takeoff=1.0, speed=1.0, yaw=float('nan'), frame_id='fcu_horiz',
-            tolerance=0.25, wait_ms=25, delay_fcu=1000,
+            tolerance=0.25, wait_ms=25, delay_fcu=1000, delay=False,
             timeout_arm=1500, timeout_fcu=3000, timeout=7500):
     print("Starting takeoff!")
     navigate(frame_id=frame_id, x=0, y=0, z=z, yaw=float('nan'), speed=speed_takeoff, update_frame=False, auto_arm=True)
@@ -223,6 +240,14 @@ def takeoff(z=1, speed_takeoff=1.0, speed=1.0, yaw=float('nan'), frame_id='fcu_h
         time = (rospy.get_rostime() - time_start).to_sec() * 1000
         if timeout_fcu != 0 and (time >= timeout_fcu):
             print('Takeoff | Timed out! | t: ', time, sep='')
+            break
+        rate.sleep()
+
+    while delay:
+        print("Waiting for timeout end")
+        time = (rospy.get_rostime() - time_start).to_sec() * 1000
+        if timeout != 0 and (time >= timeout_fcu):
+            print('Timeout ended', sep='')
             break
         rate.sleep()
 
