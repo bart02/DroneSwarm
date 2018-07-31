@@ -1,0 +1,18 @@
+<DroneSwarm>
+	<time t="1.0">
+		<copter n="1">
+			<reach x="0.000000" y="0.000000" z="2.500000"/>
+		</copter>
+		<copter n="2">
+			<reach x="0.000000" y="-4.729151" z="5.000000"/>
+		</copter>
+	</time>
+	<time t="2.0">
+		<copter n="1">
+			<reach x="0.000000" y="0.000000" z="5.000000"/>
+		</copter>
+		<copter n="2">
+			<reach x="0.000000" y="-4.729151" z="10.000000"/>
+		</copter>
+	</time>
+</DroneSwarm>
