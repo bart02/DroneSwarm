@@ -13,7 +13,7 @@ try:
         data = str(sock.recv(1024))
         print(data)
         try:
-            eval(str(data))
+            eval(str(data))  # If you read it please close your eyes
 
         except:
             print('er')
