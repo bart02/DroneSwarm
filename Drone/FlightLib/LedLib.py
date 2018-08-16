@@ -165,6 +165,7 @@ def strip_run_step(red, green, blue, length, direction, iteration):
     r_delta = red // length
     g_delta = green // length
     b_delta = blue // length
+    direction = not direction
     for i in range(strip.numPixels()):
         n = ((strip.numPixels()-1)*direction)-((i+iteration) % strip.numPixels())
         r_fin = max(0, (red - (r_delta * i)))
@@ -182,7 +183,7 @@ def strip_off():
 
 def led_thread():
     global mode
-    print("Starting thread")
+    print("Starting LedLib thread")
     iteration = 0
     while True:
         if mode == "rainbow":
