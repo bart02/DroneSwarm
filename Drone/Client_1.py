@@ -303,11 +303,16 @@ try:
         print(data)
         try:
             if b'programm' in data:
+                print(1)
                 xm = open('xml.xml', 'w')
+                print(2)
                 data = data[data.index(b'programm') + 8:]
+                print(3)
                 xm.write(data)
+                print(4)
 
                 while True:
+                    print('5___________')
                     
                     data = str(sock.recv(1024))
                     print(data)
