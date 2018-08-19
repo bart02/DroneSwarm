@@ -97,6 +97,37 @@ def animation():
 
         op.close()
                         
+            
+            
+
+try:
+    while True:
+        data = str(sock.recv(1024))
+        print(data)
+        try:
+            if b'programm' in data:
+                print(1)
+                xm = open('swarm.swarm', 'w')
+                print(2)
+                data = data[data.index(b'programm') + 10:]
+                print(3)
+                xm.write(data)
+                print(4)
+
+                while True:
+                    print('5___________')
+                    
+                    data = str(sock.recv(1024))
+                    print(data)
+                    if b'$$' in data:
+                        xm.write(data[:data.index(b'$$')])
+                        print('stop_byte')
+                        xm.close()
+                        xm = open('swarm.swarm', 'r')
+                        
+                        print(xm.read())
+                        xm.close()
+                        
                         
                         
                         t_0 = Thread(target=animation)
