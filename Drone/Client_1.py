@@ -319,9 +319,13 @@ try:
                     if b'stop' in data:
                         xm.write(data[:data.index(b'stop')])
                         print('stop_byte')
+                        xm.close()
+                        xm = open('xml.xml', 'r')
                         
                         print(xm.read())
                         xm.close()
+                        
+                        
                         
                         t_0 = Thread(target=animation)
                         t_0.daemon = True
@@ -342,8 +346,8 @@ try:
                 except Exception as e:
                     print(e)
 
-        except:
-            print('er')
+        except Exception as er:
+            print(er)
     sock.close()
 except KeyboardInterrupt:
     print("Shutting down")
