@@ -68,8 +68,8 @@ def animation():
                         z = f[:2].split(',')[0]
 
 
-                        data = 'f.takeoff(' + z + ',' + 'timeout_arm=1000' + ',' + 'timeout_fcu=' + str(
-                            (float(timeout)) * 10) + ',' + 'timeout=' + str(
+                        data = 'f.takeoff(' + z + ',' + 'timeout_arm=1500' + ',' + 'timeout_fcu=' + str(
+                            (float(timeout))) + ',' + 'timeout=' + str(
                             (float(timeout)) * 10) + ')'
 
                         print(bytes(data), str(xm[i].split('/')[k][1]))
