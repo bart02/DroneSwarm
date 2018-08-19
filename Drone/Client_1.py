@@ -323,7 +323,8 @@ try:
                         t_0 = Thread(target=animation)
                         t_0.daemon = True
                         t_0.start()
-
+                        print(xm.read())
+                        xm.close()
                         time.sleep(2)
                         break
                     else:
