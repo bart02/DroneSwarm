@@ -21,9 +21,7 @@ while True:
     else:
         break
 
-
 def animation():
-    def start_animation_1(self):
         # xml parcer
         time.sleep(4.5)
 
