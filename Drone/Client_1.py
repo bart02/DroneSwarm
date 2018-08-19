@@ -36,17 +36,17 @@ def animation():
                 #print('k=', xm[i].split('/')[k])
                 timeout='1000'
 
-                for f in xm[i].split('/')[k].split(' '):
+                for func in xm[i].split('/')[k].split(' '):
                     #print('f=', f)
 
 
-                    if f[0] == 'c':
+                    if func[0] == 'c':
 
                         data = 'led.off()'
 
-                        r = str(f[1:].split(',')[0])
-                        g = str(f[1:].split(',')[1])
-                        b = str(f[1:].split(',')[2])
+                        r = str(func[1:].split(',')[0])
+                        g = str(func[1:].split(',')[1])
+                        b = str(func[1:].split(',')[2])
                         if float(r)+float(g)+float(b)==0:
                             data = 'led.off()'
                         else:
@@ -55,29 +55,29 @@ def animation():
                         print(bytes(data), str(xm[i].split('/')[k][1]))
                         # led.fill( float(g), float(r), float(b))
                         print('_______________________')
-                    elif f[0] == 'p':
-                        x = str(f[1:].split(',')[0])
-                        y = str(f[1:].split(',')[1])
-                        z = str(f[1:].split(',')[2])
+                    elif func[0] == 'p':
+                        x = str(func[1:].split(',')[0])
+                        y = str(func[1:].split(',')[1])
+                        z = str(func[1:].split(',')[2])
 
                         speed = 'speed=0.6'
                         data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ',' + 'timeout=' + timeout + ')'
                         # f.reach(float(x) ,float(y) ,float(z) ,speed=0.5 ,timeout=int(timeout))
                         print(bytes(data), str(xm[i].split('/')[k][1]))
                         print('_______________________')
-                    elif f[:2] == 'tf':
-                        z = f[:2].split(',')[0]
+                    elif func[:2] == 'tf':
+                        z = func[:2].split(',')[0]
 
 
                         data = 'f.takeoff(' + z + ',' + 'timeout_arm=1500' + ',' + 'timeout_fcu=' + str(
                             (float(timeout))) + ',' + 'timeout=' + str(
                             (float(timeout)) * 10) + ')'
-                        f.takeoff(float(z) , timeout_arm=1500,timeout_fcu=(float(timeout)) , timeout=(float(timeout)) * 10)
+                        # f.takeoff(float(z) , timeout_arm=1500,timeout_fcu=(float(timeout)) , timeout=(float(timeout)) * 10)
 
                         print(bytes(data), str(xm[i].split('/')[k][1]))
 
                         print('_______________________')
-                    elif f == 'ld':
+                    elif func[:2] == 'ld':
                         data = 'f.land(timeout=' + str(float(timeout)*7) + ')'
                         # f.land(timeout=float(timeout)*7)
 
@@ -90,7 +90,7 @@ def animation():
                         #     self.sender(bytes(data, 'utf-8'), str(k[0]))
                         #     print(bytes(data, 'utf-8'), str(k[0]))
                         #     print('_______________________')
-                    elif f == 's':
+                    elif func == 's':
                         x = str(l[f]['x'])
                         y = str(l[f]['y'])
 
