@@ -53,6 +53,7 @@ def animation():
                             data = 'led.fill' + '(' + g + ',' + r + ',' + b + ')'
 
                         print(bytes(data), str(xm[i].split('/')[k][1]))
+                        # led.fill( float(g), float(r), float(b))
                         print('_______________________')
                     elif f[0] == 'p':
                         x = str(f[1:].split(',')[0])
@@ -61,7 +62,7 @@ def animation():
 
                         speed = 'speed=0.6'
                         data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ',' + 'timeout=' + timeout + ')'
-
+                        # f.reach(float(x) ,float(y) ,float(z) ,speed=0.5 ,timeout=int(timeout))
                         print(bytes(data), str(xm[i].split('/')[k][1]))
                         print('_______________________')
                     elif f[:2] == 'tf':
@@ -71,12 +72,14 @@ def animation():
                         data = 'f.takeoff(' + z + ',' + 'timeout_arm=1500' + ',' + 'timeout_fcu=' + str(
                             (float(timeout))) + ',' + 'timeout=' + str(
                             (float(timeout)) * 10) + ')'
+                        f.takeoff(float(z) , timeout_arm=1500,timeout_fcu=(float(timeout)) , timeout=(float(timeout)) * 10)
 
                         print(bytes(data), str(xm[i].split('/')[k][1]))
 
                         print('_______________________')
                     elif f == 'ld':
-                        data = 'f.land(timeout=' + timeout + ')'
+                        data = 'f.land(timeout=' + str(float(timeout)*7) + ')'
+                        # f.land(timeout=float(timeout)*7)
 
                         print(bytes(data), str(xm[i].split('/')[k][1]))
                         print('_______________________')
