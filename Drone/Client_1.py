@@ -52,7 +52,7 @@ def animation():
                         else:
                             data = 'led.fill' + '(' + g + ',' + r + ',' + b + ')'
 
-                        print(bytes(data, 'utf-8'), str(xm[i].split('/')[k][1]))
+                        print(bytes(data), str(xm[i].split('/')[k][1]))
                         print('_______________________')
                     elif f[0] == 'p':
                         x = str(f[1:].split(',')[0])
@@ -62,7 +62,7 @@ def animation():
                         speed = 'speed=0.6'
                         data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ',' + 'timeout=' + timeout + ')'
 
-                        print(bytes(data, 'utf-8'), str(xm[i].split('/')[k][1]))
+                        print(bytes(data), str(xm[i].split('/')[k][1]))
                         print('_______________________')
                     elif f[:2] == 'tf':
                         z = f[:2].split(',')[0]
@@ -72,13 +72,13 @@ def animation():
                             (float(timeout)) * 10) + ',' + 'timeout=' + str(
                             (float(timeout)) * 10) + ')'
 
-                        print(bytes(data, 'utf-8'), str(xm[i].split('/')[k][1]))
+                        print(bytes(data), str(xm[i].split('/')[k][1]))
 
                         print('_______________________')
                     elif f == 'ld':
                         data = 'f.land(timeout=' + timeout + ')'
 
-                        print(bytes(data, 'utf-8'), str(xm[i].split('/')[k][1]))
+                        print(bytes(data), str(xm[i].split('/')[k][1]))
                         print('_______________________')
                         # elif f == 'attitude':
                         #     z = str(l[f]['z'])
