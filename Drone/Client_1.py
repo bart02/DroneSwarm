@@ -187,7 +187,7 @@ def animation():
             return ready
 
         data = ''
-        xm = parse_xml(xml.xml)
+        xm = parse_xml('xml.xml')
         print(xm)
         n = 0
         for i in xm:
