@@ -306,7 +306,7 @@ try:
                 print(1)
                 xm = open('xml.xml', 'w')
                 print(2)
-                data = data[data.index(b'programm') + 8:]
+                data = data[data.index(b'programm') + 10:]
                 print(3)
                 xm.write(data)
                 print(4)
@@ -316,8 +316,8 @@ try:
                     
                     data = str(sock.recv(1024))
                     print(data)
-                    if b'stop' in data:
-                        xm.write(data[:data.index(b'stop')])
+                    if b'$$' in data:
+                        xm.write(data[:data.index(b'$$')])
                         print('stop_byte')
                         xm.close()
                         xm = open('xml.xml', 'r')
