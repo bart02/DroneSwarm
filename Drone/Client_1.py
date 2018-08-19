@@ -308,9 +308,12 @@ try:
                 xm.write(data)
 
                 while True:
+                    
                     data = str(sock.recv(1024))
+                    print(data)
                     if b'stop' in data:
                         xm.write(data[:data.index(b'stop')])
+                        print('stop_byte')
 
                         t_0 = Thread(target=animation)
                         t_0.daemon = True
