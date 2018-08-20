@@ -1,3 +1,6 @@
+# USE ONLY WITHONT SUDO
+# ptyhon rosip.py
+
 import socket
 import fcntl
 import struct
