@@ -98,7 +98,8 @@ def animation():
                 #     print(bytes(x + ' ' + y, 'utf-8'), str(xm[i].split('/')[k][1]))
                 #     print('_______________________')
         time.sleep(1)
-
+        
+    print('FINISHED')
     op.close()
 
 
