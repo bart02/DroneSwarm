@@ -40,8 +40,11 @@ def animation():
 
             for func in xm[i].split('/')[k].split(' '):
                 # print('f=', f)
+                print('copter num',xm[i].split('/')[k][0])
+                print('copter num1',xm[i].split('/')[k])
+                
 
-                if func[0] == 'c' and int(xm[i].split('/')[k][1]) == int(number):
+                if func[0] == 'c' and int(xm[i].split('/')[k][0]) == int(number):
 
                     data = 'led.off()'
 
