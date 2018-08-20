@@ -41,7 +41,7 @@ def animation():
             for func in xm[i].split('/')[k].split(' '):
                 # print('f=', f)
 
-                if func[0] == 'c' and xm[i].split('/')[k][1] == number:
+                if func[0] == 'c' and int(xm[i].split('/')[k][1]) == int(number):
 
                     data = 'led.off()'
 
@@ -56,7 +56,7 @@ def animation():
                     print(bytes(data), str(xm[i].split('/')[k][1]))
                     # led.fill( float(g), float(r), float(b))
                     print('_______________________')
-                elif func[0] == 'p' and xm[i].split('/')[k][1] == number:
+                elif func[0] == 'p' and int(xm[i].split('/')[k][1]) == int(number):
                     x = str(func[1:].split(',')[0])
                     y = str(func[1:].split(',')[1])
                     z = str(func[1:].split(',')[2])
@@ -66,7 +66,7 @@ def animation():
                     # f.reach(float(x) ,float(y) ,float(z) ,speed=0.5 ,timeout=int(timeout))
                     print(bytes(data), str(xm[i].split('/')[k][1]))
                     print('_______________________')
-                elif func[:2] == 'tf' and xm[i].split('/')[k][1] == number:
+                elif func[:2] == 'tf' and int(xm[i].split('/')[k][1])) == int(number):
                     z = func[:2].split(',')[0]
 
                     data = 'f.takeoff(' + z + ',' + 'timeout_arm=1500' + ',' + 'timeout_fcu=' + str(
@@ -77,7 +77,7 @@ def animation():
                     print(bytes(data), str(xm[i].split('/')[k][1]))
 
                     print('_______________________')
-                elif func[:2] == 'ld' and xm[i].split('/')[k][1] == number:
+                elif func[:2] == 'ld' and int(xm[i].split('/')[k][1]) == int(number):
                     data = 'f.land(timeout=' + str(float(timeout) * 7) + ')'
                     # f.land(timeout=float(timeout)*7)
 
@@ -140,6 +140,7 @@ try:
             elif b'!' in data:
                 sq = data.split('$$')
                 number = sq[0][1:]
+                print('number',number)
 
             else:
                 try:
