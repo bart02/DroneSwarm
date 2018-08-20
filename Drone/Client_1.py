@@ -66,7 +66,7 @@ def animation():
                     # f.reach(float(x) ,float(y) ,float(z) ,speed=0.5 ,timeout=int(timeout))
                     print(bytes(data), str(xm[i].split('/')[k][1]))
                     print('_______________________')
-                elif func[:2] == 'tf' and int(xm[i].split('/')[k][1])) == int(number):
+                elif func[:2] == 'tf' and int(xm[i].split('/')[k][1]) == int(number):
                     z = func[:2].split(',')[0]
 
                     data = 'f.takeoff(' + z + ',' + 'timeout_arm=1500' + ',' + 'timeout_fcu=' + str(
