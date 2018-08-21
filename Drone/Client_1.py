@@ -68,7 +68,7 @@ def animation():
                     print(bytes(data), str(xm[i].split('/')[k][0]))
                     print('_______________________')
                 elif func[:2] == 'tf' and int(xm[i].split('/')[k][0]) == int(number):
-                    z = func[:2].split(',')[0]
+                    z = func[2:].split(',')[0]
 
                     data = 'f.takeoff(' + z + ',' + 'timeout_arm=1500' + ',' + 'timeout_fcu=' + str(
                         (float(timeout))) + ',' + 'timeout=' + str(
