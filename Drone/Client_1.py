@@ -55,7 +55,7 @@ def animation():
                         data = 'led.fill' + '(' + g + ',' + r + ',' + b + ')'
 
                     print(bytes(data), str(xm[i].split('/')[k][0]))
-                    # led.fill( float(g), float(r), float(b))
+                    led.fill( float(g), float(r), float(b))
                     print('_______________________')
                 elif func[0] == 'p' and int(xm[i].split('/')[k][0]) == int(number):
                     x = str(func[1:].split(',')[0])
