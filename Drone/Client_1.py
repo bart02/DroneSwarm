@@ -40,7 +40,6 @@ def animation():
 
             for func in xm[i].split('/')[k].split(' '):
                 # print('f=', f)
-                
 
                 if func[0] == 'c' and int(xm[i].split('/')[k][0]) == int(number):
 
@@ -55,7 +54,7 @@ def animation():
                         data = 'led.fill' + '(' + g + ',' + r + ',' + b + ')'
 
                     print(bytes(data), str(xm[i].split('/')[k][0]))
-                    led.fill( int(g), int(r), int(b))
+                    led.fill(int(g), int(r), int(b))
                     print('_______________________')
                 elif func[0] == 'p' and int(xm[i].split('/')[k][0]) == int(number):
                     x = str(func[1:].split(',')[0])
@@ -64,9 +63,9 @@ def animation():
 
                     v = str(func[1:].split(',')[3])
 
-                    speed = 'speed='+v
+                    speed = 'speed=' + v
                     data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ',' + 'timeout=' + timeout + ')'
-                    f.reach(float(x) ,float(y) ,float(z) ,speed=0.5 ,timeout=int(timeout))
+                    f.reach(float(x), float(y), float(z), speed=0.5, timeout=int(timeout))
                     print(bytes(data), str(xm[i].split('/')[k][0]))
                     print('_______________________')
                 elif func[:2] == 'tf' and int(xm[i].split('/')[k][0]) == int(number):
@@ -75,14 +74,14 @@ def animation():
                     data = 'f.takeoff(' + z + ',' + 'timeout_arm=1500' + ',' + 'timeout_fcu=' + str(
                         (float(timeout))) + ',' + 'timeout=' + str(
                         (float(timeout)) * 10) + ')'
-                    f.takeoff(float(z) , timeout_arm=1500,timeout_fcu=(float(timeout)) , timeout=(float(timeout)) * 10)
+                    f.takeoff(float(z), timeout_arm=1500, timeout_fcu=(float(timeout)), timeout=(float(timeout)) * 10)
 
                     print(bytes(data), str(xm[i].split('/')[k][0]))
 
                     print('_______________________')
                 elif func[:2] == 'ld' and int(xm[i].split('/')[k][0]) == int(number):
                     data = 'f.land(timeout=' + str(float(timeout) * 7) + ')'
-                    f.land(timeout=float(timeout)*7)
+                    f.land(timeout=float(timeout) * 7)
 
                     print(bytes(data), str(xm[i].split('/')[k][0]))
                     print('_______________________')
@@ -100,7 +99,7 @@ def animation():
                 #     print(bytes(x + ' ' + y, 'utf-8'), str(xm[i].split('/')[k][1]))
                 #     print('_______________________')
         time.sleep(1)
-        
+
     print('FINISHED')
     op.close()
 
@@ -144,7 +143,7 @@ try:
             elif b'!' in data:
                 sq = data.split('$$')
                 number = sq[0][1:]
-                print('number',number)
+                print('number', number)
 
             else:
                 try:
