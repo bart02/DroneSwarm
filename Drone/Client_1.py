@@ -62,7 +62,9 @@ def animation():
                     y = str(func[1:].split(',')[1])
                     z = str(func[1:].split(',')[2])
 
-                    speed = 'speed=0.6'
+                    v = str(func[1:].split(',')[3])
+
+                    speed = 'speed='+v
                     data = 'f.reach' + '(' + x + ',' + y + ',' + z + ',' + speed + ',' + 'timeout=' + timeout + ')'
                     f.reach(float(x) ,float(y) ,float(z) ,speed=0.5 ,timeout=int(timeout))
                     print(bytes(data), str(xm[i].split('/')[k][0]))
